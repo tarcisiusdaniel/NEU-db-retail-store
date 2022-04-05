@@ -28,6 +28,7 @@ CREATE TABLE `transaction` (
   `id` int(11) NOT NULL,
   `shipment_provider` varchar(45) DEFAULT NULL,
   `total_price` double DEFAULT NULL,
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP,
   `buyer_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `shipper` (`shipment_provider`),
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-04 18:14:04
+-- Dump completed on 2022-04-04 18:33:50

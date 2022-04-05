@@ -28,6 +28,7 @@ CREATE TABLE `purchase` (
   `id` int(11) NOT NULL,
   `purchase_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `purchase_quantity` int(11) NOT NULL,
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP,
   `order_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `purchases_to_order` (`order_id`),
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-04 18:14:03
+-- Dump completed on 2022-04-04 18:33:49
