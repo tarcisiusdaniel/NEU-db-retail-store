@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `e_commerce_5200` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `e_commerce_5200`;
 -- MySQL dump 10.13  Distrib 8.0.18, for macos10.14 (x86_64)
 --
 -- Host: 127.0.0.1    Database: e_commerce_5200
@@ -18,32 +16,31 @@ USE `e_commerce_5200`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `purchase`
+-- Table structure for table `transactions`
 --
 
-DROP TABLE IF EXISTS `purchase`;
+DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `purchase` (
-  `id` int(11) NOT NULL,
-  `purchase_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `purchase_quantity` int(11) NOT NULL,
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shipment_provider` enum('FEDEX','USPS','UPS') DEFAULT NULL,
   `creation` datetime DEFAULT CURRENT_TIMESTAMP,
   `order_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `purchases_to_order` (`order_id`),
-  CONSTRAINT `purchase_id` FOREIGN KEY (`id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `purchases_to_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `transactions_to_order` (`order_id`),
+  CONSTRAINT `transactions_to_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase`
+-- Dumping data for table `transactions`
 --
 
-LOCK TABLES `purchase` WRITE;
-/*!40000 ALTER TABLE `purchase` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase` ENABLE KEYS */;
+LOCK TABLES `transactions` WRITE;
+/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+INSERT INTO `transactions` VALUES (1,'UPS','2022-04-05 19:30:29',1);
+/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-04 18:33:49
+-- Dump completed on 2022-04-05 21:19:14

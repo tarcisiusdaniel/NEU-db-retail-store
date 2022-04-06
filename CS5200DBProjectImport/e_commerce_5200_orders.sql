@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `e_commerce_5200` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `e_commerce_5200`;
 -- MySQL dump 10.13  Distrib 8.0.18, for macos10.14 (x86_64)
 --
 -- Host: 127.0.0.1    Database: e_commerce_5200
@@ -18,26 +16,33 @@ USE `e_commerce_5200`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `shippers`
+-- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `shippers`;
+DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `shippers` (
-  `shipper` varchar(20) NOT NULL,
-  PRIMARY KEY (`shipper`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `total_price` double DEFAULT NULL,
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP,
+  `buyer_id` int(11) DEFAULT NULL,
+  `order_status` enum('FAILED','PENDING','SUCCESS') DEFAULT NULL,
+  `created_on` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_to_buyer` (`buyer_id`),
+  CONSTRAINT `order_to_buyer` FOREIGN KEY (`buyer_id`) REFERENCES `buyers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `shippers`
+-- Dumping data for table `orders`
 --
 
-LOCK TABLES `shippers` WRITE;
-/*!40000 ALTER TABLE `shippers` DISABLE KEYS */;
-INSERT INTO `shippers` VALUES ('FEDEX'),('UPS'),('USPS');
-/*!40000 ALTER TABLE `shippers` ENABLE KEYS */;
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,20,'2022-04-05 19:29:41',1,'SUCCESS','2022-04-05 19:29:41');
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-04 18:33:50
+-- Dump completed on 2022-04-05 21:19:14
