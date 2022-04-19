@@ -6,9 +6,11 @@ import cs5200.dbms.spring_boot_CRUD_project.entity.Seller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
+@CrossOrigin(origins = "*")
 public class SellerService {
 
   @Autowired

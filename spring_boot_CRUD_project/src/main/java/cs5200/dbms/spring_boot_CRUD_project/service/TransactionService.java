@@ -5,8 +5,10 @@ import cs5200.dbms.spring_boot_CRUD_project.entity.Transaction;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Service
+@CrossOrigin(origins = "*")
 public class TransactionService {
 
   @Autowired
