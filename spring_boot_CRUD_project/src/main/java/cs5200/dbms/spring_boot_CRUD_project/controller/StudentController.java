@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cs5200.dbms.spring_boot_CRUD_project.service.StudentService;
 
 @RestController
+
 public class StudentController {
 
 	@Autowired
