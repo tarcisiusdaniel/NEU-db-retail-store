@@ -24,39 +24,44 @@ public class TransactionController {
 
   @PostMapping("/create")
   public String add(@RequestBody Transaction transaction) {
-    return transactionService.createTransaction(transaction).getId() > 0 ? "Transaction created successfully" : "Failed";
+    return transactionService.createTransaction(transaction).getId() > 0
+        ? "Transaction created successfully" : "Failed";
   }
 
   @GetMapping("/findAll")
-  public List<Transaction> getAll(){
+  public List<Transaction> getAll() {
     return transactionService.findAllTransactions();
   }
 
   @GetMapping("/find/{transactionId}")
-  public Transaction getTransaction(@PathVariable("transactionId") int id){
+  public Transaction getTransaction(@PathVariable("transactionId") int id) {
     return transactionService.findTransactionById(id);
   }
 
   @GetMapping("/delete/{transactionId}")
-  public void delete(@PathVariable("transactionId") int id){
+  public void delete(@PathVariable("transactionId") int id) {
     transactionService.deleteTransaction(id);
   }
 
   @PostMapping("/update/{transactionId}")
   public String update(@PathVariable("transactionId") Integer transactionId,
-      @RequestBody Transaction transaction){
-    if(transaction == null || transactionId == null || transactionId.intValue()<1)
+      @RequestBody Transaction transaction) {
+    if (transaction == null || transactionId == null || transactionId.intValue() < 1) {
       throw new RuntimeException("Arguments can not be null.");
+    }
 
     Transaction oldTransaction = transactionService.findTransactionById(transactionId);
 
-    if(oldTransaction == null)
+    if (oldTransaction == null) {
       throw new RuntimeException("Transaction does not exist as per the given details");
+    }
 
     Transaction updateTransaction = transactionService.updateTransaction(transaction);
 
-    if(!Objects.equals(oldTransaction.getId(), updateTransaction.getId()))
-      throw new RuntimeException("Error occurred while updating transaction details. Please check later.");
+    if (!Objects.equals(oldTransaction.getId(), updateTransaction.getId())) {
+      throw new RuntimeException(
+          "Error occurred while updating transaction details. Please check later.");
+    }
 
     return "Transaction updated successfully";
   }

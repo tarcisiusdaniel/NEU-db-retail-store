@@ -1,10 +1,8 @@
 package cs5200.dbms.spring_boot_CRUD_project.service;
 
 import cs5200.dbms.spring_boot_CRUD_project.dao.ShoppingCartDao;
-import cs5200.dbms.spring_boot_CRUD_project.entity.Product;
 import cs5200.dbms.spring_boot_CRUD_project.entity.ShoppingCart;
 import java.util.List;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +15,7 @@ public class ShoppingCartService {
   ShoppingCartDao shoppingCartDao;
 
   public ShoppingCart createCart(ShoppingCart cart) {
+
     return shoppingCartDao.save(cart);
   }
 
@@ -36,9 +35,8 @@ public class ShoppingCartService {
     return shoppingCartDao.save(cart);
   }
 
-  public void addProduct(Product product, ShoppingCart cart){
-    Set<Product> productSet = cart.getProducts();
-    cart.setProducts(product);
+  public void addProduct(ShoppingCart cart) {
+
     shoppingCartDao.save(cart);
   }
 }

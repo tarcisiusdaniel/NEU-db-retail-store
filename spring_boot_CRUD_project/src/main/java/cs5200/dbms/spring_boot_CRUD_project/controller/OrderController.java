@@ -28,34 +28,38 @@ public class OrderController {
   }
 
   @GetMapping("/findAll")
-  public List<Order> getAll(){
+  public List<Order> getAll() {
     return orderService.findAllOrder();
   }
 
   @GetMapping("/find/{orderId}")
-  public Order getOrder(@PathVariable("orderId") int id){
+  public Order getOrder(@PathVariable("orderId") int id) {
     return orderService.findOrderById(id);
   }
 
   @GetMapping("/delete/{orderId}")
-  public void delete(@PathVariable("orderId") int id){
+  public void delete(@PathVariable("orderId") int id) {
     orderService.deleteOrder(id);
   }
 
   @PostMapping("/update/{orderId}")
-  public String update(@PathVariable("orderId") Integer orderId,@RequestBody Order order){
-    if(order == null || orderId == null || orderId.intValue()<1)
+  public String update(@PathVariable("orderId") Integer orderId, @RequestBody Order order) {
+    if (order == null || orderId == null || orderId.intValue() < 1) {
       throw new RuntimeException("Arguments can not be null.");
+    }
 
     Order oldOrder = orderService.findOrderById(orderId);
 
-    if(oldOrder == null)
+    if (oldOrder == null) {
       throw new RuntimeException("Order does not exist as per the given details");
+    }
 
     Order updateOrder = orderService.updateOrder(order);
 
-    if(!Objects.equals(oldOrder.getId(), updateOrder.getId()))
-      throw new RuntimeException("Error occurred while updating order details. Please check later.");
+    if (!Objects.equals(oldOrder.getId(), updateOrder.getId())) {
+      throw new RuntimeException(
+          "Error occurred while updating order details. Please check later.");
+    }
 
     return "Order updated successfully";
   }

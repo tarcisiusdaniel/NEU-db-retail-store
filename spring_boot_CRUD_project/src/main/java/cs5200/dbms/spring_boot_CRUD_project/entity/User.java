@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
+
   private static int PASSWORD_LENGTH = 7;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,7 +87,7 @@ public class User {
    * @param firstName first name as String
    */
   public void setFirstName(String firstName) {
-    if (firstName != null){// && !firstName.isBlank() && firstName.matches("[a-zA-Z]+")) {
+    if (firstName != null) {// && !firstName.isBlank() && firstName.matches("[a-zA-Z]+")) {
       this.firstName = firstName;
     } else {
       throw new RuntimeException("First Name can not be null");
@@ -108,7 +109,7 @@ public class User {
    * @param lastName last name as String
    */
   public void setLastName(String lastName) {
-    if (lastName != null){// && !lastName.isBlank() && lastName.matches("[a-zA-Z]+")) {
+    if (lastName != null) {// && !lastName.isBlank() && lastName.matches("[a-zA-Z]+")) {
       this.lastName = lastName;
     } else {
       throw new RuntimeException("Last Name can not be null");
@@ -130,7 +131,7 @@ public class User {
    * @param userName as String
    */
   public void setUserName(String userName) {
-    if (userName != null){// && !userName.isBlank()) {
+    if (userName != null) {// && !userName.isBlank()) {
       this.userName = userName;
     } else {
       throw new RuntimeException("User name can not be null");
@@ -152,7 +153,7 @@ public class User {
    * @param password as String
    */
   public void setPassword(String password) {
-    if (password != null){// && !password.isBlank() && password.length() > PASSWORD_LENGTH) {
+    if (password != null) {// && !password.isBlank() && password.length() > PASSWORD_LENGTH) {
       this.password = password;
     } else {
       throw new RuntimeException("Password can not be null");
@@ -196,7 +197,7 @@ public class User {
    * @param contactNumber as String
    */
   public void setContactNumber(String contactNumber) {
-    if (!contactNumber.matches("[0-9]+")) {
+    if (contactNumber != null && !contactNumber.matches("[0-9]+")) {
       throw new RuntimeException("Invalid contact number provided.");
     }
     this.contactNumber = contactNumber;
@@ -217,7 +218,7 @@ public class User {
    * @param email as String
    */
   public void setEmail(String email) {
-    if (email != null){// && !email.isBlank()) {
+    if (email != null) {// && !email.isBlank()) {
       this.email = email;
     } else {
       throw new RuntimeException("Email can not be null");
@@ -226,6 +227,7 @@ public class User {
 
   /**
    * Gets date when user was created
+   *
    * @return int
    */
   public Date getCreatedOn() {

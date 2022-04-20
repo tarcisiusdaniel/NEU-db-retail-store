@@ -6,51 +6,50 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="student_spring_records")
+@Table(name = "student_spring_records")
 public class Student {
-	
-	@Id
-	@Column
-	private int roll;
-	@Column
-	private String name;
-	@Column
-	private String city;
-	
-	public Student() {}
 
-	public Student(int roll, String name, String city) {
-		super();
-		this.roll = roll;
-		this.name = name;
-		this.city = city;
-	}
+  @Id
+  @Column
+  private int roll;
+  @Column
+  private String name;
+  @Column
+  private String city;
 
-	public int getRoll() {
-		return roll;
-	}
+  public Student() {
+  }
 
-	public void setRoll(int roll) {
-		this.roll = roll;
-	}
+  public Student(int roll, String name, String city) {
+    super();
+    this.roll = roll;
+    this.name = name;
+    this.city = city;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public int getRoll() {
+    return roll;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setRoll(int roll) {
+    this.roll = roll;
+  }
 
-	public String getCity() {
-		return city;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
-	
-	
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
 
 }

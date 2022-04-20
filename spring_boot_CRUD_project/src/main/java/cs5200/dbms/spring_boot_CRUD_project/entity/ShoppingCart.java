@@ -1,14 +1,12 @@
 package cs5200.dbms.spring_boot_CRUD_project.entity;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,25 +23,31 @@ public class ShoppingCart {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "buyer_id")
   private Buyer buyer;
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "product_id")
-  private Set<Product> products;
+
+  private Integer productId;
+
+  @Column(name = "total_price")
   private Double totalPrice;
   private Integer quantity;
 
   /**
    * Constructs a Shopping Cart using below details
    */
-  public ShoppingCart(Double price, Integer quantity) {
+  public ShoppingCart(Double price, Integer quantity, Integer productId) {
     this.totalPrice = price;
     this.quantity = quantity;
-    this.products = new HashSet<>();
+    this.productId = productId;
   }
 
   public ShoppingCart() {
 
   }
-//
+
+  public Integer getProductId() {
+    return productId;
+  }
+
+  //
 //  public void addProduct(Product product){
 //    this.products.put(product.getProductName(),product);
 //    this.quantity ++;
@@ -110,19 +114,18 @@ public class ShoppingCart {
    *
    * @return list of products
    */
-  public Set<Product> getProducts() {
-    return products;
-  }
-
-  /**
-   * Sets a product
-   *
-   * @param product
-   */
-  public void setProducts(Product product) {
-    this.products.add(product);
-  }
-
+//  public Set<Product> getProducts() {
+//    return products;
+//  }
+//
+//  /**
+//   * Sets a product
+//   *
+//   * @param product
+//   */
+//  public void setProducts(Product product) {
+//    this.products.add(product);
+//  }
   public Integer getId() {
     return this.id;
   }

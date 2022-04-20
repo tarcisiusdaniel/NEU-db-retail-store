@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface TransactionDao extends CrudRepository<Transaction,Integer> {
+public interface TransactionDao extends CrudRepository<Transaction, Integer> {
+
   @Query(value = "SELECT * FROM transactions",
       nativeQuery = true)
   public List<Transaction> findAllTransactions();

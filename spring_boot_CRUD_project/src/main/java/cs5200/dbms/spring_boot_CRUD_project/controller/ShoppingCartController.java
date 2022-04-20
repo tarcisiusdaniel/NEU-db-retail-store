@@ -1,7 +1,9 @@
 package cs5200.dbms.spring_boot_CRUD_project.controller;
 
-import cs5200.dbms.spring_boot_CRUD_project.entity.Product;
+import cs5200.dbms.spring_boot_CRUD_project.entity.Buyer;
 import cs5200.dbms.spring_boot_CRUD_project.entity.ShoppingCart;
+import cs5200.dbms.spring_boot_CRUD_project.service.BuyerService;
+import cs5200.dbms.spring_boot_CRUD_project.service.ProductService;
 import cs5200.dbms.spring_boot_CRUD_project.service.ShoppingCartService;
 import java.util.List;
 import java.util.Objects;
@@ -23,49 +25,70 @@ public class ShoppingCartController {
   @Autowired
   private ShoppingCartService shoppingCartService;
 
+  @Autowired
+  private ProductService productService;
+
+  @Autowired
+  private BuyerService buyerService;
+
   @PostMapping("/create")
   public String add(@RequestBody ShoppingCart cart) {
-    return shoppingCartService.createCart(cart).getId() > 0 ? "Cart created successfully" : "Failed";
+    ShoppingCart toSaveCart = cart;
+
+    //cart.setBuyer(buyerRestRepository.findBuyerById(id));
+    // return shoppingCartRepository.save(cart);
+    Integer buyer_id = cart.getBuyer().getId();
+    Buyer buyer = buyerService.findBuyerById(buyer_id);
+    toSaveCart.setBuyer(buyer);
+    ShoppingCart savedCart = shoppingCartService.createCart(toSaveCart);
+
+    //productService.updateProduct(cart.g)
+    return savedCart.getId() > 0 ? "Cart created successfully" : "Failed";
   }
 
   @GetMapping("/findAll")
-  public List<ShoppingCart> getAll(){
+  public List<ShoppingCart> getAll() {
     return shoppingCartService.findAllCarts();
   }
 
   @GetMapping("/find/{cartId}")
-  public ShoppingCart getOrder(@PathVariable("cartId") int id){
+  public ShoppingCart getOrder(@PathVariable("cartId") int id) {
     return shoppingCartService.findCartById(id);
   }
 
   @GetMapping("/delete/{cartId}")
-  public void delete(@PathVariable("cartId") int id){
+  public void delete(@PathVariable("cartId") int id) {
     shoppingCartService.deleteCart(id);
   }
 
   @PostMapping("/update/{cartId}")
-  public String update(@PathVariable("cartId") Integer cartId,@RequestBody ShoppingCart cart){
-    if(cart == null || cartId == null || cartId.intValue()<1)
+  public String update(@PathVariable("cartId") Integer cartId, @RequestBody ShoppingCart cart) {
+    if (cart == null || cartId == null || cartId.intValue() < 1) {
       throw new RuntimeException("Arguments can not be null.");
+    }
 
     ShoppingCart oldCart = shoppingCartService.findCartById(cartId);
 
-    if(oldCart == null)
+    if (oldCart == null) {
       throw new RuntimeException("Cart does not exist as per the given details");
+    }
 
     ShoppingCart updateOrder = shoppingCartService.updateCart(cart);
 
-    if(!Objects.equals(oldCart.getId(), updateOrder.getId()))
+    if (!Objects.equals(oldCart.getId(), updateOrder.getId())) {
       throw new RuntimeException("Error occurred while updating cart details. Please check later.");
+    }
 
     return "Cart updated successfully";
   }
-
-  @PostMapping("/addProduct")
-  public void addProducts(@RequestBody ShoppingCart cart, @RequestBody Product product){
-    if(product == null)
-      throw new RuntimeException("Product can not be null");
-    shoppingCartService.addProduct(product,cart);
-  }
+//
+//  @PostMapping("/addProduct")
+//  public void addProducts(@RequestBody ShoppingCart cart, @RequestBody Product product){
+//    if(product == null)
+//      throw new RuntimeException("Product can not be null");
+//    //Set<Product> productSet = cart.getProducts();
+//    //cart.setProducts(product);
+//    shoppingCartService.addProduct(cart);
+//  }
 
 }
