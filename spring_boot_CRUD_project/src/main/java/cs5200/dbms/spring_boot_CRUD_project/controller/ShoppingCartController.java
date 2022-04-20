@@ -66,7 +66,12 @@ public class ShoppingCartController {
     if (cart == null || cartId == null || cartId.intValue() < 1) {
       throw new RuntimeException("Arguments can not be null.");
     }
-
+    if(cart.getBuyer().getId() == null){
+      throw new RuntimeException("Buyer Id can not be null while updating Cart.");
+    }
+    if(cart.getBuyer().getUser().getId() == null){
+      throw new RuntimeException("User Id can not be null while updating Cart.");
+    }
     ShoppingCart oldCart = shoppingCartService.findCartById(cartId);
 
     if (oldCart == null) {

@@ -35,6 +35,7 @@ public class SellerController {
 
   @GetMapping("/findAll")
   public List<Seller> getAll() {
+
     return sellerService.findAllSeller();
   }
 
@@ -51,9 +52,11 @@ public class SellerController {
   @PostMapping("/update/{sellerId}")
   public String update(@PathVariable("sellerId") int id,@RequestBody Seller seller) {
     if (seller == null) {
-      throw new RuntimeException("Argument can not be null.");
+      throw new RuntimeException("Seller can not be null.");
     }
-
+    if(seller.getUser().getId() == null){
+      throw new RuntimeException("User Id can not be null while updating seller.");
+    }
     Seller oldSeller = sellerService.findSellerById(seller.getId());
 
     if (oldSeller == null) {
