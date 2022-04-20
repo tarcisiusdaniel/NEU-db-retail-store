@@ -48,8 +48,8 @@ public class SellerController {
     sellerService.deleteSeller(id);
   }
 
-  @PostMapping("/update")
-  public String update(@RequestBody Seller seller) {
+  @PostMapping("/update/{sellerId}")
+  public String update(@PathVariable("sellerId") int id,@RequestBody Seller seller) {
     if (seller == null) {
       throw new RuntimeException("Argument can not be null.");
     }
