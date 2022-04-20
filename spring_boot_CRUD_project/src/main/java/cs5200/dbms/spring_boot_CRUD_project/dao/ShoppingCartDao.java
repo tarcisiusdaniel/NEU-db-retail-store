@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface ShoppingCartDao extends CrudRepository<ShoppingCart,Integer> {
+public interface ShoppingCartDao extends CrudRepository<ShoppingCart, Integer> {
+
   @Query(value = "SELECT * FROM carts",
       nativeQuery = true)
   public List<ShoppingCart> findAllCarts();

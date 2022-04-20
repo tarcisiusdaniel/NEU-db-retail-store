@@ -1,11 +1,14 @@
 package cs5200.dbms.spring_boot_CRUD_project.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -17,13 +20,21 @@ public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer Id;
+  private Integer id;
+  @Column(name = "product_name")
   private String productName;
+  @Column(name = "manufacturer")
   private String manufacturerName;
+
   private Double price;
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
+  @Column(name = "product_category")
   private Product_Category category;
   private Integer quantity;
+
+  @ManyToOne
+  @JoinColumn(name = "purchase_id")
+  private Purchase purchase;
 
   /**
    * Constructs a Product using below details
@@ -109,7 +120,7 @@ public class Product {
    * @param price as double
    */
   public void setPrice(double price) {
-    if (price < 0) {
+    if (price > 0) {
       this.price = price;
     } else {
       throw new RuntimeException("Price can less than zero");
@@ -132,10 +143,10 @@ public class Product {
    */
   public void setQuantity(int quantity) {
     //if(quantity <1)
-      this.quantity = quantity;
+    this.quantity = quantity;
   }
 
   public Integer getId() {
-    return this.Id;
+    return this.id;
   }
 }

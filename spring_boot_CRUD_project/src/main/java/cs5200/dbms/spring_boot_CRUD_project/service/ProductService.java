@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Service
 @CrossOrigin(origins = "*")
 public class ProductService {
+
   @Autowired
   ProductDao productDao;
 

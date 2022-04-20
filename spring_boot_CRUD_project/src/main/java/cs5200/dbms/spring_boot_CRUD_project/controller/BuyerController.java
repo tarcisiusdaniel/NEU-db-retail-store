@@ -31,30 +31,33 @@ public class BuyerController {
   }
 
   @GetMapping("/findAll")
-  public List<Buyer> getAll(){
+  public List<Buyer> getAll() {
     return buyerService.findAllBuyer();
   }
 
   @GetMapping("/find/{buyerId}")
-  public Buyer getBuyer(@PathVariable("buyerId") int id){
+  public Buyer getBuyer(@PathVariable("buyerId") int id) {
     return buyerService.findBuyerById(id);
   }
 
   @GetMapping("/delete/{buyerId}")
-  public void delete(@PathVariable("buyerId") int id){
+  public void delete(@PathVariable("buyerId") int id) {
     buyerService.deleteBuyer(id);
   }
 
   @PostMapping("/update/{buyerId}")
-  public String update(@PathVariable("buyerId") int id,@RequestBody Buyer buyer){
+  public String update(@PathVariable("buyerId") int id, @RequestBody Buyer buyer) {
     Buyer oldBuyer = buyerService.findBuyerById(id);
-    if(oldBuyer == null)
+    if (oldBuyer == null) {
       throw new RuntimeException("Buyer does not exist as per the given details");
+    }
 
     Buyer newBuyer = buyerService.updateBuyer(buyer);
 
-    if(oldBuyer.getId() != newBuyer.getId())
-      throw new RuntimeException("Error occurred while updating buyer details. Please check later.");
+    if (oldBuyer.getId() != newBuyer.getId()) {
+      throw new RuntimeException(
+          "Error occurred while updating buyer details. Please check later.");
+    }
 
     return newBuyer.getId() > 0 ? "Buyer updated successfully" : "Failed";
   }

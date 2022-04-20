@@ -1,7 +1,6 @@
 package cs5200.dbms.spring_boot_CRUD_project.entity;
 
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,12 +19,12 @@ public class Order {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "buyer_id")
   private User buyer;
 
   private double totalPrice;
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
   private Order_Status orderStatus;
   private Date createdOn;
 

@@ -1,7 +1,7 @@
 package cs5200.dbms.spring_boot_CRUD_project.controller;
 
-import cs5200.dbms.spring_boot_CRUD_project.service.SellerService;
 import cs5200.dbms.spring_boot_CRUD_project.entity.Seller;
+import cs5200.dbms.spring_boot_CRUD_project.service.SellerService;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,39 +28,44 @@ public class SellerController {
 
   @PostMapping("/create")
   public String add(@RequestBody Seller seller) {
-    return sellerService.createSeller(seller).getId() > 0 ? "Seller created successfully" : "Failed";
+    return sellerService.createSeller(seller).getId() > 0 ? "Seller created successfully"
+        : "Failed";
 
   }
 
   @GetMapping("/findAll")
-  public List<Seller> getAll(){
+  public List<Seller> getAll() {
     return sellerService.findAllSeller();
   }
 
   @GetMapping("/find/{sellerId}")
-  public Seller getSeller(@PathVariable("sellerId") int id){
+  public Seller getSeller(@PathVariable("sellerId") int id) {
     return sellerService.findSellerById(id);
   }
 
   @GetMapping("/delete/{sellerId}")
-  public void delete(@PathVariable("sellerId") int id){
+  public void delete(@PathVariable("sellerId") int id) {
     sellerService.deleteSeller(id);
   }
 
   @PostMapping("/update")
-  public String update(@RequestBody Seller seller){
-    if(seller == null)
+  public String update(@RequestBody Seller seller) {
+    if (seller == null) {
       throw new RuntimeException("Argument can not be null.");
+    }
 
     Seller oldSeller = sellerService.findSellerById(seller.getId());
 
-    if(oldSeller == null)
+    if (oldSeller == null) {
       throw new RuntimeException("Seller does not exist as per the given details");
+    }
 
     Seller newSeller = sellerService.updateSeller(seller);
 
-    if(!Objects.equals(oldSeller.getId(), newSeller.getId()))
-      throw new RuntimeException("Error occurred while updating seller details. Please check later.");
+    if (!Objects.equals(oldSeller.getId(), newSeller.getId())) {
+      throw new RuntimeException(
+          "Error occurred while updating seller details. Please check later.");
+    }
 
     return newSeller.getId() > 0 ? "Seller updated successfully" : "Failed";
   }

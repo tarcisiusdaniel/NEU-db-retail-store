@@ -16,7 +16,7 @@ public class BuyerService {
   private BuyerDao buyerDao;
 
 
-  public Buyer createBuyer(Buyer buyer){
+  public Buyer createBuyer(Buyer buyer) {
     return buyerDao.save(buyer);
   }
 
@@ -31,6 +31,7 @@ public class BuyerService {
   public void deleteBuyer(Integer id) {
     buyerDao.deleteById(id);
   }
+
   public Buyer updateBuyer(Buyer newBuyer) {
 
     return buyerDao.save(newBuyer);

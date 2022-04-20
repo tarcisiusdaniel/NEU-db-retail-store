@@ -1,0 +1,18 @@
+package cs5200.dbms.spring_boot_CRUD_project.dao;
+
+import cs5200.dbms.spring_boot_CRUD_project.entity.Purchase;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+public interface PurchaseDao extends CrudRepository<Purchase, Integer> {
+
+  @Query(value = "SELECT * FROM purchase",
+      nativeQuery = true)
+  public List<Purchase> findAllPurchases();
+
+  @Query(value = "SELECT * FROM purchase WHERE id=:purchaseId",
+      nativeQuery = true)
+  public Purchase findPurchaseById(@Param("purchaseId") Integer id);
+}

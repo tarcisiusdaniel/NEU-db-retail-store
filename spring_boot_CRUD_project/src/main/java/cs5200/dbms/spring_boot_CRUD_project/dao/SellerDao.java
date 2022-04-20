@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface SellerDao extends CrudRepository<Seller, Integer> {
+
   @Query(value = "SELECT * FROM sellers",
       nativeQuery = true)
   public List<Seller> findAllSellers();
