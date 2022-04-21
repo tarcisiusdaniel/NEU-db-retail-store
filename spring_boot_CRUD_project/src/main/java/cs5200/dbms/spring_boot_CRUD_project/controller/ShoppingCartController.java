@@ -37,6 +37,11 @@ public class ShoppingCartController {
 
     //cart.setBuyer(buyerRestRepository.findBuyerById(id));
     // return shoppingCartRepository.save(cart);
+
+    var product = productService.findProductById(cart.getProductId());
+    if(product == null){
+      throw new RuntimeException("Product does not exist in the system");
+    }
     Integer buyer_id = cart.getBuyer().getId();
     Buyer buyer = buyerService.findBuyerById(buyer_id);
     toSaveCart.setBuyer(buyer);
@@ -71,6 +76,10 @@ public class ShoppingCartController {
     }
     if(cart.getBuyer().getUser().getId() == null){
       throw new RuntimeException("User Id can not be null while updating Cart.");
+    }
+    var product = productService.findProductById(cart.getProductId());
+    if(product == null){
+      throw new RuntimeException("Product does not exist in the system");
     }
     ShoppingCart oldCart = shoppingCartService.findCartById(cartId);
 
