@@ -5,16 +5,21 @@ const CartEditScreen = (props) => {
     const [cartReadData, setCartReadData] = useState(null);
     const [buyersData, setBuyersData] = useState([]);
     const [productsData, setProductsData] = useState([]);
+    const [cartUpdateData, setCartUpdateData] = useState(null);
+    const [cartDeleteData, setCartDeleteData] = useState(null);
+    const [cartCreateData, setCartCreateData] = useState(null);
 
     async function getAllBuyers() {
         const buyersReadFetch = await fetch(`http://localhost:8080/buyer/findAll`);
         const buyersReadFetchedData = await buyersReadFetch.json();
+        console.log(buyersReadFetchedData.length);
         setBuyersData(buyersReadFetchedData);
     }
 
     async function getAllProducts() {
         const productsReadFetch = await fetch(`http://localhost:8080/product/findAll`);
         const productsReadFetchedData = await productsReadFetch.json();
+        console.log(productsReadFetchedData.length);
         setProductsData(productsReadFetchedData);
     }
 
@@ -31,9 +36,14 @@ const CartEditScreen = (props) => {
     }
 
     async function cartReadingFetchHandler(id) {
-        const cartReadFetch = await fetch(`http://localhost:8080/cart/find/${id}`);
-        const cartReadFetchedData = await cartReadFetch.json();
-        setCartReadData(cartReadFetchedData);
+        try {
+            const cartReadFetch = await fetch(`http://localhost:8080/cart/find/${id}`);
+            const cartReadFetchedData = await cartReadFetch.json();
+            setCartReadData(cartReadFetchedData);
+        } catch (e) {
+            console.log("Error catched");
+            setCartReadData(null);
+        }
     }
 
     async function getCartBuyer(buyerId) {
@@ -63,6 +73,12 @@ const CartEditScreen = (props) => {
                 'Content-Type': 'application/json'
             }
         });
+        if (response.ok) {
+            setCartUpdateData(true);
+        }
+        else if (!response.ok) {
+            setCartUpdateData(false);
+        }
     }
 
     const cartDeleteHandler = (event) => {
@@ -73,6 +89,12 @@ const CartEditScreen = (props) => {
 
     async function cartDeleteFetchHandler(id) {
         const response = await fetch(`http://localhost:8080/cart/delete/${id}`);
+        if (response.ok) {
+            setCartDeleteData(true);
+        }
+        else if (!response.ok) {
+            setCartDeleteData(false);
+        }
     }
 
     const cartCreateHandler = (event) => {
@@ -94,6 +116,12 @@ const CartEditScreen = (props) => {
                 'Content-Type': 'application/json'
             }
         });
+        if (response.ok) {
+            setCartCreateData(true);
+        }
+        else if (!response.ok) {
+            setCartCreateData(false);
+        }
     }
 
     const buyersIDs = buyersData.map((buyer) => <li>{buyer.id}</li>);
@@ -101,8 +129,7 @@ const CartEditScreen = (props) => {
     return (
         <Fragment>
             <div>
-                <h1>Edit Screen For cart's Table</h1>
-                    {isLoading && (buyersData.length === 0 || productsData.length === 0) && <p>Loading...</p>}
+                <h1>Edit Screen For Cart's Table</h1>
                     {!isLoading && buyersData.length !== 0 && productsData.length !== 0 && 
                         <div>
                             <p>Here is the available buyers' IDs:</p>
@@ -123,7 +150,7 @@ const CartEditScreen = (props) => {
                         </form>
                         <p>
                             {cartReadData === null ? 
-                                <p></p>
+                                <p>No data available</p>
                                 :
                                 <ul>
                                     <li>Cart's Product's ID: {cartReadData.productId}</li>
@@ -152,6 +179,10 @@ const CartEditScreen = (props) => {
                             <br />
                             <button type = "submit">Update cart</button>
                         </form>
+                        <br />
+                        {cartUpdateData === null && <span></span>}
+                        {cartUpdateData === true && <span>Updated</span>}
+                        {cartUpdateData === false && <span>Fail to Update</span>}
                     <h3><b>Deleting</b></h3>
                         <form onSubmit = {cartDeleteHandler}>
                             <label htmlFor="delete_cart_id">Cart ID</label>
@@ -159,6 +190,10 @@ const CartEditScreen = (props) => {
                             <br />
                             <button type = "submit">Delete cart</button>
                         </form>
+                        <br />
+                        {cartDeleteData === null && <span></span>}
+                        {cartDeleteData === true && <span>Deleted</span>}
+                        {cartDeleteData === false && <span>Fail to Delete</span>}
                     <h3><b>Creating</b></h3>
                         <form onSubmit = {cartCreateHandler}>
                             <label htmlFor="create_cart_product_id">Cart's Product ID:</label>
@@ -175,8 +210,13 @@ const CartEditScreen = (props) => {
                             <br />
                             <button type = "submit">Create cart</button>
                         </form>
+                        <br />
+                        {cartCreateData === null && <span></span>}
+                        {cartCreateData === true && <span>Created</span>}
+                        {cartCreateData === false && <span>Fail to Create</span>}
                         <br /><br />
                     <a href = "/list_screen/cart">Go To Cart's List Screen</a>
+
             </div>
         </Fragment>
     )
