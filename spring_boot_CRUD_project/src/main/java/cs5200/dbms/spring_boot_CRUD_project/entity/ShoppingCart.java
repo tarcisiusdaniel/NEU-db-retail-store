@@ -1,13 +1,10 @@
 package cs5200.dbms.spring_boot_CRUD_project.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,11 +17,12 @@ public class ShoppingCart {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "buyer_id")
-  private Buyer buyer;
-
+  //  @OneToOne(cascade = CascadeType.ALL,orphanRemoval = false, fetch = FetchType.LAZY)
+//  @JoinColumn(name = "buyer_id")
+//  private Buyer buyer;
   private Integer productId;
+
+  private Integer buyerId;
 
   @Column(name = "total_price")
   private Double totalPrice;
@@ -73,22 +71,12 @@ public class ShoppingCart {
     this.totalPrice = totalPrice;
   }
 
-  /**
-   * Returns a buyer
-   *
-   * @return buyer as object
-   */
-  public Buyer getBuyer() {
-    return buyer;
+  public Integer getBuyerId() {
+    return buyerId;
   }
 
-  /**
-   * Sets a buyer
-   *
-   * @param buyer as object
-   */
-  public void setBuyer(Buyer buyer) {
-    this.buyer = buyer;
+  public void setBuyerId(int buyerId) {
+    this.buyerId = buyerId;
   }
 
   /**

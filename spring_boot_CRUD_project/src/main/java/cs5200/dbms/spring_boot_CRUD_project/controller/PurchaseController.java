@@ -67,7 +67,7 @@ public class PurchaseController {
     if (purchase == null) {
       throw new RuntimeException("Purchase can not be null.");
     }
-    if(purchase.getOrder().getId() == null){
+    if (purchase.getOrder().getId() == null) {
       throw new RuntimeException("Order Id can not be null while updating Purchase.");
     }
     Purchase newPurchase = purchaseService.updatePurchase(purchase);

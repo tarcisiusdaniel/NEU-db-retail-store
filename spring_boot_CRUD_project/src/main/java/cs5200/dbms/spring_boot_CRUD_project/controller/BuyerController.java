@@ -50,7 +50,7 @@ public class BuyerController {
     if (buyer == null) {
       throw new RuntimeException("Buyer can not be null.");
     }
-    if(buyer.getUser().getId() == null){
+    if (buyer.getUser().getId() == null) {
       throw new RuntimeException("User Id can not be null while updating buyer.");
     }
     Buyer oldBuyer = buyerService.findBuyerById(id);

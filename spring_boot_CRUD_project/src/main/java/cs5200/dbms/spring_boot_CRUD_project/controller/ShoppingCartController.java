@@ -2,9 +2,11 @@ package cs5200.dbms.spring_boot_CRUD_project.controller;
 
 import cs5200.dbms.spring_boot_CRUD_project.entity.Buyer;
 import cs5200.dbms.spring_boot_CRUD_project.entity.ShoppingCart;
+import cs5200.dbms.spring_boot_CRUD_project.entity.User;
 import cs5200.dbms.spring_boot_CRUD_project.service.BuyerService;
 import cs5200.dbms.spring_boot_CRUD_project.service.ProductService;
 import cs5200.dbms.spring_boot_CRUD_project.service.ShoppingCartService;
+import cs5200.dbms.spring_boot_CRUD_project.service.UserService;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class ShoppingCartController {
   @Autowired
   private BuyerService buyerService;
 
+  @Autowired
+  private UserService userService;
+
   @PostMapping("/create")
   public String add(@RequestBody ShoppingCart cart) {
     ShoppingCart toSaveCart = cart;
@@ -39,12 +44,15 @@ public class ShoppingCartController {
     // return shoppingCartRepository.save(cart);
 
     var product = productService.findProductById(cart.getProductId());
-    if(product == null){
+    if (product == null) {
       throw new RuntimeException("Product does not exist in the system");
     }
-    Integer buyer_id = cart.getBuyer().getId();
+    Integer buyer_id = cart.getBuyerId();
     Buyer buyer = buyerService.findBuyerById(buyer_id);
-    toSaveCart.setBuyer(buyer);
+    if (buyer == null) {
+      throw new RuntimeException("Buyer does not exist");
+    }
+    toSaveCart.setBuyerId(buyer_id);
     ShoppingCart savedCart = shoppingCartService.createCart(toSaveCart);
 
     //productService.updateProduct(cart.g)
@@ -71,14 +79,17 @@ public class ShoppingCartController {
     if (cart == null || cartId == null || cartId.intValue() < 1) {
       throw new RuntimeException("Arguments can not be null.");
     }
-    if(cart.getBuyer().getId() == null){
+    if (cart.getBuyerId() == null) {
       throw new RuntimeException("Buyer Id can not be null while updating Cart.");
     }
-    if(cart.getBuyer().getUser().getId() == null){
+    User user = userService.findUserById(
+        buyerService.findBuyerById(cart.getBuyerId()).getUser().getId());
+    if (user == null) {
       throw new RuntimeException("User Id can not be null while updating Cart.");
     }
+
     var product = productService.findProductById(cart.getProductId());
-    if(product == null){
+    if (product == null) {
       throw new RuntimeException("Product does not exist in the system");
     }
     ShoppingCart oldCart = shoppingCartService.findCartById(cartId);

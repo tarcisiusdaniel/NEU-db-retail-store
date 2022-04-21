@@ -50,11 +50,11 @@ public class SellerController {
   }
 
   @PostMapping("/update/{sellerId}")
-  public String update(@PathVariable("sellerId") int id,@RequestBody Seller seller) {
+  public String update(@PathVariable("sellerId") int id, @RequestBody Seller seller) {
     if (seller == null) {
       throw new RuntimeException("Seller can not be null.");
     }
-    if(seller.getUser().getId() == null){
+    if (seller.getUser().getId() == null) {
       throw new RuntimeException("User Id can not be null while updating seller.");
     }
     Seller oldSeller = sellerService.findSellerById(seller.getId());

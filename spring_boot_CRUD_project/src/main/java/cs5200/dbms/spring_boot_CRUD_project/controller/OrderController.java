@@ -47,7 +47,7 @@ public class OrderController {
     if (order == null || orderId == null || orderId.intValue() < 1) {
       throw new RuntimeException("Arguments can not be null.");
     }
-    if(order.getBuyer().getId() == null){
+    if (order.getBuyer().getId() == null) {
       throw new RuntimeException("Buyer Id can not be null while updating order.");
     }
     Order oldOrder = orderService.findOrderById(orderId);
