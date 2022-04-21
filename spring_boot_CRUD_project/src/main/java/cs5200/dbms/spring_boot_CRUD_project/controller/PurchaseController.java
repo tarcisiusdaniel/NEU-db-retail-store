@@ -64,7 +64,12 @@ public class PurchaseController {
     if (purchaseById == null) {
       throw new RuntimeException("Buyer does not exist as per the given details");
     }
-
+    if (purchase == null) {
+      throw new RuntimeException("Purchase can not be null.");
+    }
+    if(purchase.getOrder().getId() == null){
+      throw new RuntimeException("Order Id can not be null while updating Purchase.");
+    }
     Purchase newPurchase = purchaseService.updatePurchase(purchase);
 
     if (purchaseById.getId() != newPurchase.getId()) {

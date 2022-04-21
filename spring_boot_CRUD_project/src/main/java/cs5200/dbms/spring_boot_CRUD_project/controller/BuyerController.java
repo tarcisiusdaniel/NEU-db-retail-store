@@ -47,6 +47,12 @@ public class BuyerController {
 
   @PostMapping("/update/{buyerId}")
   public String update(@PathVariable("buyerId") int id, @RequestBody Buyer buyer) {
+    if (buyer == null) {
+      throw new RuntimeException("Buyer can not be null.");
+    }
+    if(buyer.getUser().getId() == null){
+      throw new RuntimeException("User Id can not be null while updating buyer.");
+    }
     Buyer oldBuyer = buyerService.findBuyerById(id);
     if (oldBuyer == null) {
       throw new RuntimeException("Buyer does not exist as per the given details");
