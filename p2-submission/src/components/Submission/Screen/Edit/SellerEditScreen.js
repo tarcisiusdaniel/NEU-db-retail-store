@@ -2,6 +2,9 @@ import { Fragment, useState } from "react";
 
 const SellerEditScreen = (props) => {
     const [sellerReadData, setSellerReadData] = useState(null);
+    const [sellerUpdateData, setSellerUpdateData] = useState(null);
+    const [sellerDeleteData, setSellerDeleteData] = useState(null);
+    const [sellerCreateData, setSellerCreateData] = useState(null);
 
     const sellerReadingHandler = (event) => {
         event.preventDefault();
@@ -9,9 +12,14 @@ const SellerEditScreen = (props) => {
     }
 
     async function sellerReadingFetchHandler(id) {
-        const sellerReadFetch = await fetch(`http://localhost:8080/seller/find/${id}`);
-        const sellerReadFetchedData = await sellerReadFetch.json();
-        setSellerReadData(sellerReadFetchedData);
+        try {
+            const sellerReadFetch = await fetch(`http://localhost:8080/seller/find/${id}`);
+            const sellerReadFetchedData = await sellerReadFetch.json();
+            setSellerReadData(sellerReadFetchedData);
+        } catch (e) {
+            console.log("error catched");
+            setSellerReadData(null);
+        }
     }
 
     async function getSellerUserId(sellerId) {
@@ -49,6 +57,12 @@ const SellerEditScreen = (props) => {
                 'Content-Type': 'application/json'
             }
         });
+        if (response.ok) {
+            setSellerUpdateData(true);
+        }
+        else if (!response.ok) {
+            setSellerUpdateData(false);
+        }
     }
 
     const sellerDeleteHandler = (event) => {
@@ -59,6 +73,12 @@ const SellerEditScreen = (props) => {
 
     async function sellerDeleteFetchHandler(id) {
         const sellerReadFetch = await fetch(`http://localhost:8080/seller/delete/${id}`);
+        if (sellerReadFetch.ok) {
+            setSellerDeleteData(true);
+        }
+        else if (!sellerReadFetch.ok) {
+            setSellerDeleteData(false);
+        }
     }
 
     const sellerCreateHandler = (event) => {
@@ -84,6 +104,12 @@ const SellerEditScreen = (props) => {
                 'Content-Type': 'application/json'
             }
         });
+        if (response.ok) {
+            setSellerCreateData(true);
+        }
+        else if (!response.ok) {
+            setSellerCreateData(false);
+        }
     }
 
     return (
@@ -98,7 +124,7 @@ const SellerEditScreen = (props) => {
                         </form>
                         <p>
                             {sellerReadData === null ? 
-                                <p></p>
+                                <p>No data available</p>
                                 :
                                 <ul>
                                     <li>Email: {sellerReadData.user.email}</li>
@@ -134,6 +160,10 @@ const SellerEditScreen = (props) => {
                             <br />
                             <button type = "submit">Update Seller</button>
                         </form>
+                        <br />
+                        {sellerUpdateData === null && <span></span>}
+                        {sellerUpdateData === true && <span>Updated</span>}
+                        {sellerUpdateData === false && <span>Fail to Update</span>}
                     <h3><b>Deleting</b></h3>
                         <form onSubmit = {sellerDeleteHandler}>
                             <label htmlFor="delete_seller_id">Seller ID</label>
@@ -141,6 +171,10 @@ const SellerEditScreen = (props) => {
                             <br />
                             <button type = "submit">Delete Seller</button>
                         </form>
+                        <br />
+                        {sellerDeleteData === null && <span></span>}
+                        {sellerDeleteData === true && <span>Deleted</span>}
+                        {sellerDeleteData === false && <span>Fail to Delete</span>}
                     <h3><b>Creating</b></h3>
                         <form onSubmit = {sellerCreateHandler}>
                             <label htmlFor= "create_seller_email">Seller Email:</label>
@@ -163,8 +197,13 @@ const SellerEditScreen = (props) => {
                             <br />
                             <button type = "submit">Create Seller</button>
                         </form>
+                        <br />
+                        {sellerCreateData === null && <span></span>}
+                        {sellerCreateData === true && <span>Created</span>}
+                        {sellerCreateData === false && <span>Fail to Create</span>}
                         <br /><br />
                     <a href = "/list_screen/seller">Go To Seller's List Screen</a>
+                    
             </div>
         </Fragment>
     )

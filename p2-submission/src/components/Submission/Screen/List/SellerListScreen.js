@@ -34,7 +34,9 @@ const SellerListScreen = (props) => {
         <Fragment>
             <div>
                 <h1>List Screen For Seller's Table</h1>
+                <a href = "/">Go To Home Page</a>
                 {isLoading && sellerData.length === 0 && <p>Loading...</p>}
+                {!isLoading && sellerData.length === 0 && <h3>There are no sellers</h3>}
                 {!isLoading && sellerData.length !== 0 && <h3>There are {sellerData.length} sellers:</h3>}
                 {sellerRenderedView}
                 {!isLoading && <a href = '/edit_screen/seller'>Edit a seller record or create a new seller</a>}

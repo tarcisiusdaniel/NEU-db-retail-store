@@ -2,6 +2,9 @@ import { useState, Fragment } from "react";
 
 const ProductEditScreen = (props) => {
     const [productReadData, setProductReadData] = useState(null);
+    const [productUpdateData, setProductUpdateData] = useState(null);
+    const [productDeleteData, setProductDeleteData] = useState(null);
+    const [productCreateData, setProductCreateData] = useState(null);
 
     const productReadingHandler = (event) => {
         event.preventDefault();
@@ -9,16 +12,15 @@ const ProductEditScreen = (props) => {
     }
 
     async function productReadingFetchHandler(id) {
-        const productReadFetch = await fetch(`http://localhost:8080/product/find/${id}`);
-        const productReadFetchedData = await productReadFetch.json();
-        setProductReadData(productReadFetchedData);
+        try {
+            const productReadFetch = await fetch(`http://localhost:8080/product/find/${id}`);
+            const productReadFetchedData = await productReadFetch.json();
+            setProductReadData(productReadFetchedData);
+        } catch (e) {
+            console.log("Error caught");
+            setProductReadData(null);
+        }
     }
-
-    // async function getproductUserId(productId) {
-    //     const productReadFetch = await fetch(`http://localhost:8080/product/find/${productId}`);
-    //     const productReadFetchedData = await productReadFetch.json();
-    //     return +productReadFetchedData.user.id;
-    // }
 
     const productUpdateHandler = (event) => {
         event.preventDefault();
@@ -41,6 +43,12 @@ const ProductEditScreen = (props) => {
                 'Content-Type': 'application/json'
             }
         });
+        if (response.ok) {
+            setProductUpdateData(true);
+        }
+        else if (!response.ok) {
+            setProductUpdateData(false);
+        }
     }
 
     const productDeleteHandler = (event) => {
@@ -51,6 +59,12 @@ const ProductEditScreen = (props) => {
 
     async function productDeleteFetchHandler(id) {
         const productReadFetch = await fetch(`http://localhost:8080/product/delete/${id}`);
+        if (productReadFetch.ok) {
+            setProductDeleteData(true);
+        }
+        else if (!productReadFetch.ok) {
+            setProductDeleteData(false);
+        }
     }
 
     const productCreateHandler = (event) => {
@@ -72,6 +86,12 @@ const ProductEditScreen = (props) => {
                 'Content-Type': 'application/json'
             }
         });
+        if (response.ok) {
+            setProductCreateData(true);
+        }
+        else if (!response.ok) {
+            setProductCreateData(false);
+        }
     }
 
     return (
@@ -86,7 +106,7 @@ const ProductEditScreen = (props) => {
                         </form>
                         <p>
                             {productReadData === null ? 
-                                <p></p>
+                                <p>No data available</p>
                                 :
                                 <ul>
                                     <li>Product Name: {productReadData.productName}</li>
@@ -116,6 +136,10 @@ const ProductEditScreen = (props) => {
                             <br />
                             <button type = "submit">Update product</button>
                         </form>
+                        <br />
+                        {productUpdateData === null && <span></span>}
+                        {productUpdateData === true && <span>Updated</span>}
+                        {productUpdateData === false && <span>Fail to Update</span>}
                     <h3><b>Deleting</b></h3>
                         <form onSubmit = {productDeleteHandler}>
                             <label htmlFor="delete_product_id">Product ID</label>
@@ -123,6 +147,10 @@ const ProductEditScreen = (props) => {
                             <br />
                             <button type = "submit">Delete product</button>
                         </form>
+                        <br />
+                        {productDeleteData === null && <span></span>}
+                        {productDeleteData === true && <span>Deleted</span>}
+                        {productDeleteData === false && <span>Fail to Delete</span>}
                     <h3><b>Creating</b></h3>
                         <form onSubmit = {productCreateHandler}>
                             <label htmlFor= "create_product_name">Product Name:</label>
@@ -139,8 +167,13 @@ const ProductEditScreen = (props) => {
                             <br />
                             <button type = "submit">Create product</button>
                         </form>
+                        <br />
+                        {productCreateData === null && <span></span>}
+                        {productCreateData === true && <span>Created</span>}
+                        {productCreateData === false && <span>Fail to Create</span>}
                         <br /><br />
                     <a href = "/list_screen/product">Go To product's List Screen</a>
+                    
             </div>
         </Fragment>
     )

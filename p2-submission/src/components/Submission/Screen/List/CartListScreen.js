@@ -33,7 +33,9 @@ const CartListScreen = (props) => {
         <Fragment>
             <div>
                 <h1>List Screen For Cart's Table</h1>
+                <a href = "/">Go To Home Page</a>
                 {isLoading && cartData.length === 0 && <p>Loading...</p>}
+                {!isLoading && cartData.length === 0 && <h3>There are no cart items</h3>}
                 {!isLoading && cartData.length !== 0 && <h3>There are {cartData.length} cart items:</h3>}
                 {cartRenderedView}
                 {!isLoading && <a href = '/edit_screen/cart'>Edit a cart record or create a new cart</a>}
