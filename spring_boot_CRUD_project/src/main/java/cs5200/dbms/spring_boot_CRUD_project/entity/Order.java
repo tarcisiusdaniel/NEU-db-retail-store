@@ -1,14 +1,21 @@
 package cs5200.dbms.spring_boot_CRUD_project.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,14 +26,17 @@ public class Order {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "buyer_id")
-  private User buyer;
+  @Column(name="buyer_id")
+  private Integer buyerId;
 
   private double totalPrice;
   @Enumerated(EnumType.STRING)
   private Order_Status orderStatus;
   private Date createdOn;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  @JoinColumn(name = "order_id", referencedColumnName = "id")
+  private List<PurchaseItem> items = new ArrayList<>();
 
   /**
    * Constructs an empty Order
@@ -51,17 +61,17 @@ public class Order {
    *
    * @return a buyer as Object
    */
-  public User getBuyer() {
-    return this.buyer;
+  public Integer getBuyerId() {
+    return buyerId;
   }
 
   /**
    * Sets buyer
    *
-   * @param buyer as Object
+   * @param buyerId as Object
    */
-  public void setBuyer(User buyer) {
-    this.buyer = buyer;
+  public void setBuyerId(Integer buyerId) {
+    this.buyerId = buyerId;
   }
 
   /**
@@ -102,5 +112,13 @@ public class Order {
 
   public Integer getId() {
     return this.id;
+  }
+
+  public void setItems(List<PurchaseItem> items) {
+    this.items = items;
+  }
+
+  public List<PurchaseItem> getItems() {
+    return items;
   }
 }

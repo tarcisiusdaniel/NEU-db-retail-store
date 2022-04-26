@@ -22,11 +22,11 @@ public class PurchaseController {
   @Autowired
   private PurchaseService purchaseService;
 
-  @Autowired
-  private OrderService orderService;
-
-  @Autowired
-  private PurchaseItemService purchaseItemService;
+//  @Autowired
+//  private OrderService orderService;
+//
+//  @Autowired
+//  private PurchaseItemService purchaseItemService;
 
   @GetMapping("/")
   public String index() {
@@ -35,13 +35,16 @@ public class PurchaseController {
 
   @PostMapping("/create")
   public String add(@RequestBody Purchase purchase) {
-    Purchase newPurchase = purchase;
-    newPurchase.setOrder(orderService.findOrderById(purchase.getOrder().getId()));
-
-    newPurchase.setProduct(purchase.getItems());
-    Purchase p = purchaseService.create(newPurchase);
+    return addPurchase(purchase);
+  }
+  public String addPurchase(Purchase purchase){
+//    Purchase newPurchase = new Purchase(purchase.getItems());
+//
+//    newPurchase.setProduct(purchase.getItems());
+    Purchase p = purchaseService.create(purchase);
     return p.getId() > 0 ? "Purchase created successfully" : "Failed";
   }
+
 
   @GetMapping("/findAll")
   public List<Purchase> getAll() {
@@ -67,9 +70,9 @@ public class PurchaseController {
     if (purchase == null) {
       throw new RuntimeException("Purchase can not be null.");
     }
-    if (purchase.getOrder().getId() == null) {
-      throw new RuntimeException("Order Id can not be null while updating Purchase.");
-    }
+//    if (purchase.getOrder() == null) {
+//      throw new RuntimeException("Order Id can not be null while updating Purchase.");
+//    }
     Purchase newPurchase = purchaseService.updatePurchase(purchase);
 
     if (purchaseById.getId() != newPurchase.getId()) {
