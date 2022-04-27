@@ -64,4 +64,8 @@ public class ProductController {
 
     return "Product updated successfully";
   }
+  @GetMapping("/findByCategory/{category}")
+  public List<Product> findProductsByCategory(@PathVariable("category") String categoryName){
+    return productService.findProductsByCategory(categoryName.toUpperCase());
+  }
 }

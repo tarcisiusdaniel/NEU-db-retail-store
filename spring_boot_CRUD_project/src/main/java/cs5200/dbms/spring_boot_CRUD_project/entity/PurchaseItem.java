@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "cart_items")
+@Entity(name = "purchase_items")
 public class PurchaseItem {
 
   @Id
@@ -14,11 +14,24 @@ public class PurchaseItem {
 
   private int productId;
 
+  private Integer quantity;
   public Integer getId() {
     return id;
   }
 
   public int getProductId() {
     return productId;
+  }
+
+  public Integer getQuantity() {
+    return this.quantity;
+  }
+
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
+  }
+
+  public void setProductId(int productId) {
+    this.productId = productId;
   }
 }

@@ -15,4 +15,21 @@ public interface UserDao extends CrudRepository<User, Integer> {
   @Query(value = "SELECT * FROM users WHERE id=:userId",
       nativeQuery = true)
   public User findUserById(@Param("userId") Integer id);
+
+  @Query(value = "SELECT * FROM users WHERE user_name=:userName or email=:email",
+      nativeQuery = true)
+  public User findUserByUserNameOrEmail(@Param("userName") String userName,
+      @Param("email") String email);
+
+  @Query(value = "SELECT * FROM users WHERE email=:email",
+      nativeQuery = true)
+  public User findUserByEmail(@Param("email") String email);
+
+  User findByUserName(String username);
+
+  @Query(value = "SELECT * FROM users WHERE user_name=:userName or email=:userName and password=:password",
+      nativeQuery = true)
+  public User findUserByUserNameAndPassword(@Param("userName") String userName,
+      @Param("password") String password);
+
 }

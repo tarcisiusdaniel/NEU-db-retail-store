@@ -36,4 +36,8 @@ public class OrderService {
   public Order updateOrder(Order order) {
     return orderDao.save(order);
   }
+
+  public List<Order> findOrderByBuyerId(Integer buyerId){
+    return orderDao.findOrderByBuyerId(buyerId);
+  }
 }

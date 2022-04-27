@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.criteria.CriteriaBuilder.In;
 
 /**
  * Represents a Shopping cart
@@ -17,9 +18,8 @@ public class ShoppingCart {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  //  @OneToOne(cascade = CascadeType.ALL,orphanRemoval = false, fetch = FetchType.LAZY)
-//  @JoinColumn(name = "buyer_id")
-//  private Buyer buyer;
+
+
   private Integer productId;
 
   private Integer buyerId;
@@ -41,17 +41,15 @@ public class ShoppingCart {
 
   }
 
+
+
   public Integer getProductId() {
     return productId;
   }
 
-  //
-//  public void addProduct(Product product){
-//    this.products.put(product.getProductName(),product);
-//    this.quantity ++;
-//    this.totalPrice += product.getPrice();
-//  }
-
+  public void setProductId(Integer productId) {
+    this.productId = productId;
+  }
 
   /**
    * Returns a total price
@@ -97,23 +95,6 @@ public class ShoppingCart {
     this.quantity = quantity;
   }
 
-  /**
-   * Returns list of products
-   *
-   * @return list of products
-   */
-//  public Set<Product> getProducts() {
-//    return products;
-//  }
-//
-//  /**
-//   * Sets a product
-//   *
-//   * @param product
-//   */
-//  public void setProducts(Product product) {
-//    this.products.add(product);
-//  }
   public Integer getId() {
     return this.id;
   }

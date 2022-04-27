@@ -35,4 +35,8 @@ public class ProductService {
   public Product updateProduct(Product product) {
     return productDao.save(product);
   }
+
+  public List<Product> findProductsByCategory(String category){
+    return productDao.findProductByCategory(category);
+  }
 }

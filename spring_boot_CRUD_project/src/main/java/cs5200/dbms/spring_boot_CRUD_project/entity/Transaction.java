@@ -1,12 +1,16 @@
 package cs5200.dbms.spring_boot_CRUD_project.entity;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +24,8 @@ public class Transaction {
   @Enumerated(EnumType.ORDINAL)
   private Order_Status status;
 
-  //@OneToOne(cascade = CascadeType.ALL)
-  //@JoinColumn(name = "order_id")
-  //private Order order;
+  @Column(name="order_id")
+  private Integer order;
 
   private Date createdOn;
 
@@ -40,15 +43,19 @@ public class Transaction {
     return this.id;
   }
 
-//  public Order getOrder() {
-//    return this.order;
-//  }
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
+
+  public Integer getOrder() {
+    return order;
+  }
 
   public Order_Status getStatus() {
     return this.status;
   }
 
-  //public void setOrder(Order order) {
-//    this.order = order;
-//  }
+  public void setStatus(Order_Status status) {
+    this.status = status;
+  }
 }

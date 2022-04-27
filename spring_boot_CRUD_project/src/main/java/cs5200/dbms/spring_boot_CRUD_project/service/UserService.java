@@ -27,4 +27,15 @@ public class UserService {
     return userDao.findUserById(id);
   }
 
+  public User findUserByUserNameOrEmail(String userName, String email){
+    return userDao.findUserByUserNameOrEmail(userName, email);
+  }
+
+  public User findUserByEmail(String email){
+    return userDao.findUserByEmail(email);
+  }
+  public User findUserByPassword(String userName, String password){
+    return userDao.findUserByUserNameAndPassword(userName, password);
+  }
+
 }

@@ -16,4 +16,8 @@ public interface OrderDao extends CrudRepository<Order, Integer> {
       nativeQuery = true)
   public Order findOrderById(@Param("orderId") Integer id);
 
+  @Query(value = "SELECT * FROM orders WHERE buyer_id=:buyerId",
+      nativeQuery = true)
+  public List<Order> findOrderByBuyerId(@Param("buyerId") Integer buyerId);
+
 }
