@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,17 +47,18 @@ public class OrderController {
   private TransactionService transactionService;
 
   @PostMapping("/create")
-  public String add(@RequestBody Order order) {
-    if(order == null || order.getBuyerId() == null || order.getOrderStatus() == null)
-      throw new RuntimeException("Argument is passed null");
+  public ResponseEntity<?> add(@RequestBody Order order) {
+    if(order == null || order.getBuyerId() == null || order.getOrderStatus() == null) {
+      return new ResponseEntity<>("Argument is passed null", HttpStatus.BAD_REQUEST);
+    }
 
     Buyer buyer = buyerService.findBuyerById(order.getBuyerId());
     if (buyer == null) {
-      throw new RuntimeException("Buyer does not exist");
+      return new ResponseEntity<>("Buyer does not exist", HttpStatus.BAD_REQUEST);
     }
 
     if(!checkIfProductExists(order)){
-      throw new RuntimeException("Product does not exist");
+      return new ResponseEntity<>("Product does not exist", HttpStatus.BAD_REQUEST);
     }
 
     if(order.getOrderStatus() == Order_Status.CHECKOUT){
@@ -66,7 +69,7 @@ public class OrderController {
           sb.append(str).append("\n");
         }
         order.setOrderStatus(Order_Status.PENDING);
-        return sb.toString();
+        return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
       }else{
         order.setOrderStatus(Order_Status.SUCCESS);
       }
@@ -93,9 +96,9 @@ public class OrderController {
       updateProductsQuantityInStock(actualOrder);
     }
 
-
     return savedOrder.getId() > 0  && !result.equals("Order cancelled") ?
-        "Order and transaction created successfully" : "Failed";
+        new ResponseEntity<>("Order and transaction created successfully", HttpStatus.OK)
+        : new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
   }
 
   private boolean checkIfProductExists(Order userOrder) {
@@ -106,40 +109,6 @@ public class OrderController {
     }
     return true;
   }
-//  public String add(@RequestBody UserOrder order,@RequestBody Purchase purchase) {
-//    if(order == null || order.getBuyerId() == null || order.getOrderStatus() == null)
-//      throw new RuntimeException("Argument is passed null");
-//
-//    Buyer buyer = buyerService.findBuyerById(order.getBuyerId());
-//    if (buyer == null) {
-//      throw new RuntimeException("Buyer does not exist");
-//    }
-//
-//
-//    if(order.getOrderStatus() == Order_Status.SUCCESS){
-//
-//      List<String> inValidQuantities = checkQuantitiesInStockForCheckout(order);
-//      if(inValidQuantities.size() > 0) {
-//        StringBuilder sb = new StringBuilder();
-//        for (String str : inValidQuantities) {
-//          sb.append(str).append("\n");
-//        }
-//
-//        return sb.toString();
-//      }
-//    }
-//
-//
-//    int orderId = orderService.createOrder(order).getId();
-//    purchase.setOrderId(orderId);
-//    Purchase newPurchase = createPurchase(purchase);
-//
-//    if(order.getOrderStatus() == Order_Status.SUCCESS){
-//
-//      updateProductsQuantityInStock(order);
-//    }
-//    return orderId > 0 ? "Oder created successfully" : "Failed";
-//  }
 
   private List<String> checkQuantitiesInStockForCheckout(Order order) {
     List<String> inValidQuantities = new ArrayList<>();
@@ -164,7 +133,6 @@ public class OrderController {
 
         productService.updateProduct(productInDB);
       }
-
     }
   }
 
@@ -184,27 +152,29 @@ public class OrderController {
   }
 
   @PostMapping("/update/{orderId}")
-  public String update(@PathVariable("orderId") Integer orderId, @RequestBody Order order) {
+  public ResponseEntity<?> update(@PathVariable("orderId") Integer orderId, @RequestBody Order order) {
     if (order == null || orderId == null || orderId.intValue() < 1) {
-      throw new RuntimeException("Arguments can not be null.");
+      return new ResponseEntity<>("Argument is passed null", HttpStatus.BAD_REQUEST);
     }
     if (order.getBuyerId() == null) {
-      throw new RuntimeException("Buyer Id can not be null while updating order.");
+      return new ResponseEntity<>("Buyer does not exist", HttpStatus.BAD_REQUEST);
     }
     Order oldOrder = orderService.findOrderById(orderId);
 
     if (oldOrder == null) {
-      throw new RuntimeException("Order does not exist as per the given details");
+      return new ResponseEntity<>("Order does not exist", HttpStatus.BAD_REQUEST);
     }
 
     Order updateOrder = orderService.updateOrder(order);
 
     if (!Objects.equals(oldOrder.getId(), updateOrder.getId())) {
-      throw new RuntimeException(
-          "Error occurred while updating order details. Please check later.");
+      return new ResponseEntity<>("Error occurred while updating order details. Please check later."
+          , HttpStatus.BAD_REQUEST);
     }
 
-    return "Order updated successfully";
+    return updateOrder.getId() > 0 ? new ResponseEntity<>("Order updated successfully",HttpStatus.OK) :
+        new ResponseEntity<>("Error occurred while updating order details. Please check later.",
+        HttpStatus.BAD_REQUEST);
   }
   @GetMapping("/findOrderByBuyerId/{buyerId}")
   public List<Order> findOrderByBuyerId(@PathVariable ("buyerId") Integer buyerId){
@@ -216,9 +186,7 @@ public class OrderController {
     Order order = null;
     if(checkoutOrder == null){
       order = orderService.findOrderById(checkoutOrder.getId());
-//      if(order == null){
-//        throw new RuntimeException("Order does not exist");
-//      }
+
     }
 
     if(checkoutOrder.getOrderStatus() == Order_Status.CHECKOUT){

@@ -36,6 +36,7 @@ public class Product {
   @JoinColumn(name = "purchase_id")
   private Purchase purchase;
 
+  private Integer createdBy;
   /**
    * Constructs a Product using below details
    *
@@ -148,5 +149,13 @@ public class Product {
 
   public Integer getId() {
     return this.id;
+  }
+
+  public Integer getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setCreatedBy(Integer createdBy) {
+    this.createdBy = createdBy;
   }
 }

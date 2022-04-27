@@ -5,6 +5,8 @@ import cs5200.dbms.spring_boot_CRUD_project.service.SellerService;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,15 +23,11 @@ public class SellerController {
   @Autowired
   private SellerService sellerService;
 
-//  @GetMapping("/")
-//  public String index() {
-//    return "Greetings from Spring Boot!";
-//  }
-
   @PostMapping("/create")
-  public String add(@RequestBody Seller seller) {
-    return sellerService.createSeller(seller).getId() > 0 ? "Seller created successfully"
-        : "Failed";
+  public ResponseEntity<?> add(@RequestBody Seller seller) {
+    int id = sellerService.createSeller(seller).getId();
+    return id > 0 ? new ResponseEntity<>("Seller created successfully", HttpStatus.OK) :
+        new ResponseEntity<>("Failed",HttpStatus.BAD_REQUEST);
 
   }
 

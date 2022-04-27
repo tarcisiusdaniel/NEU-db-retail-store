@@ -4,6 +4,8 @@ import cs5200.dbms.spring_boot_CRUD_project.entity.Buyer;
 import cs5200.dbms.spring_boot_CRUD_project.service.BuyerService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,8 +28,11 @@ public class BuyerController {
   }
 
   @PostMapping("/create")
-  public String add(@RequestBody Buyer buyer) {
-    return buyerService.createBuyer(buyer).getId() > 0 ? "Buyer created successfully" : "Failed";
+  public ResponseEntity<?> add(@RequestBody Buyer buyer) {
+    int newId = buyerService.createBuyer(buyer).getId();
+    return newId > 0 ?
+        new ResponseEntity<>("Buyer created successfully", HttpStatus.OK) :
+        new ResponseEntity<>("Buyer creation failed",HttpStatus.BAD_REQUEST);
   }
 
   @GetMapping("/findAll")
@@ -46,25 +51,29 @@ public class BuyerController {
   }
 
   @PostMapping("/update/{buyerId}")
-  public String update(@PathVariable("buyerId") int id, @RequestBody Buyer buyer) {
+  public ResponseEntity<?> update(@PathVariable("buyerId") int id, @RequestBody Buyer buyer) {
     if (buyer == null) {
-      throw new RuntimeException("Buyer can not be null.");
+      return new ResponseEntity<>("Buyer can not be null.",
+          HttpStatus.BAD_REQUEST);
     }
     if (buyer.getUser().getId() == null) {
-      throw new RuntimeException("User Id can not be null while updating buyer.");
+      return new ResponseEntity<>("User Id can not be null while updating buyer.",
+          HttpStatus.BAD_REQUEST);
     }
     Buyer oldBuyer = buyerService.findBuyerById(id);
     if (oldBuyer == null) {
-      throw new RuntimeException("Buyer does not exist as per the given details");
+      return new ResponseEntity<>("Buyer does not exist as per the given details",
+          HttpStatus.BAD_REQUEST);
     }
 
     Buyer newBuyer = buyerService.updateBuyer(buyer);
 
     if (oldBuyer.getId() != newBuyer.getId()) {
-      throw new RuntimeException(
-          "Error occurred while updating buyer details. Please check later.");
+      return new ResponseEntity<>("Error occurred while updating buyer details. Please check later.",
+          HttpStatus.BAD_REQUEST);
     }
-
-    return newBuyer.getId() > 0 ? "Buyer updated successfully" : "Failed";
+    return newBuyer.getId() > 0 ?
+        new ResponseEntity<>("Buyer updated successfully", HttpStatus.OK) :
+        new ResponseEntity<>("Buyer updation failed",HttpStatus.BAD_REQUEST);
   }
 }
