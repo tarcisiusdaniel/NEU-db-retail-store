@@ -16,7 +16,17 @@ const UserLandingPage = (props) => {
 
     return (
         <div>
-            {authCtx.userType === 'BUYER' ? <Buyer /> : <Seller sellerName = {authCtx.userAuthInfo.firstName}/> }
+            {authCtx.userType === 'BUYER' ? 
+                <Buyer 
+                    buyerName = {authCtx.userAuthInfo.firstName}
+                    buyerInfo = {authCtx.userAuthInfo}
+                /> 
+                : 
+                <Seller 
+                    sellerName = {authCtx.userAuthInfo.firstName} 
+                    sellerInfo = {authCtx.userAuthInfo}
+                /> 
+            }
             <br />
             <button onClick = {logoutHandler}>Logout</button>
         </div>

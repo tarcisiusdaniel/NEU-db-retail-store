@@ -28,12 +28,14 @@ const LandingPage = (props) => {
         // setUsername('');
         // setPassword('');
         const userAuthInfoDemo = {
+            id: 1,
             firstName: 'Tarcisius',
             lastName: 'Hartanto',
             userName: event.target[0].value,
             password: event.target[1].value,
             billingData: 'billingData',
             email: 'tarcisiusdaniel@gmail.com',
+            address: '10721 Meridian Ave N',
         }
         console.log(event.target[0].value);
         console.log(event.target[1].value);

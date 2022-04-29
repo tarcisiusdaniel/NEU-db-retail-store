@@ -7,3 +7,10 @@ export const AuthContext = React.createContext({
     onLogout: () => {},
     onLogin: (email, password, userType, userAuthInfo) => {},
 });
+
+export const CartContext = React.createContext({
+    items: [],
+    totalAmount: 0,
+    addItem: (item) => {},
+    removeItem: (id) => {},
+});

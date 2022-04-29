@@ -15,6 +15,9 @@ import AuthProvider from './store/AuthProvider';
 import ProductEdit from './components/Presentation/User/Seller/ProductEdit';
 import AddProduct from './components/Presentation/User/Seller/AddProduct';
 import SellerEdit from './components/Presentation/User/Seller/SellerEdit';
+import Cart from './components/Presentation/User/Buyer/Cart/Cart';
+import Orders from './components/Presentation/User/Buyer/Orders/Orders';
+import Transactions from './components/Presentation/User/Buyer/Transactions/Transactions';
 
 function App() {
 
@@ -38,7 +41,9 @@ function App() {
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype/product/edit/prid=+:product_id' element = {<ProductEdit />} />
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype/product/add' element = {<AddProduct />} />
           {/* route for buyers */}
-          
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/cart/view' element = {<Cart />} />
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/orders/view' element = {<Orders />} />
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/transactions/view' element = {<Transactions />} />
         </Routes>
       </AuthProvider>
     </div>
