@@ -1,5 +1,6 @@
 package cs5200.dbms.spring_boot_CRUD_project.controller;
 
+import cs5200.dbms.spring_boot_CRUD_project.entity.Order;
 import cs5200.dbms.spring_boot_CRUD_project.entity.Product;
 import cs5200.dbms.spring_boot_CRUD_project.service.ProductService;
 import java.util.List;
@@ -83,5 +84,10 @@ public class ProductController {
   @GetMapping("/findByCategory/{category}")
   public List<Product> findProductsByCategory(@PathVariable("category") String categoryName){
     return productService.findProductsByCategory(categoryName.toUpperCase());
+  }
+
+  @GetMapping("/findBySellerId/{sellerId}")
+  public List<Product> findBySellerId(@PathVariable ("sellerId") Integer buyerId){
+    return productService.findBySellerId(buyerId);
   }
 }

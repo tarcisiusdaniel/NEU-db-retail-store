@@ -15,6 +15,8 @@ public class PurchaseItem {
   private int productId;
 
   private Integer quantity;
+
+  private Integer price;
   public Integer getId() {
     return id;
   }
