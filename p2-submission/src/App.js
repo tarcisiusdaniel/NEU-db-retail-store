@@ -37,11 +37,11 @@ function App() {
           <Route path = '/' element = {<LandingPage />} />
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype' element = {<UserLandingPage />} />
           {/* route for sellers */}
-          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/acc_info/edit/slid=+:seller_id' element = {<SellerEdit />} />
-          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/product/edit/prid=+:product_id' element = {<ProductEdit />} />
-          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/product/add' element = {<AddProduct />} />
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/uid=+:user_id/acc_info/edit/slid=+:seller_id' element = {<SellerEdit />} />
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/product/edit/slid=+:seller_id/prid=+:product_id' element = {<ProductEdit />} />
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/slid=+:seller_id/product/add' element = {<AddProduct />} />
           {/* route for buyers */}
-          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/cart/view' element = {<Cart />} />
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/brid=+:buyer_id/cart/view' element = {<Cart />} />
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype/orders/view' element = {<Orders />} />
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype/transactions/view' element = {<Transactions />} />
         </Routes>

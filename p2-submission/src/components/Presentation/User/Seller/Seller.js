@@ -1,116 +1,103 @@
-import { Fragment, useEffect, useState } from "react";
+import { React, Fragment, useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Product from "./Product";
 import { dummyProducts, dummySellerInfo } from "../Dummies/DummyData";
+import { AuthContext } from "../../../../store/context";
 
 const Seller = (props) => {
+    const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
     const { username, password, usertype } = useParams();
-    // const [sellerInfo, setSellerInfo] = useState({});
-    // const [sellerProducts, setSellerProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [sellerData, setSellerData] = useState({
+        id: null,
+        user: {
+            id: null,
+            email: null,
+            firstName: null,
+            lastName: null,
+            userName: null,
+            password: null,
+        },
+        address: null,
+    });
+    const [loadSellersProduct, setLoadSellersProduct] = useState(false);
+    const [sellersProduct, setSellersProduct] = useState([]);
 
-    // const dummySellerInfo = {
-    //     id: 2,
-    //     user: {
-    //         email: 'tarcisiusdaniel@gmail.com',
-    //         firstName: 'Tarcisius',
-    //         lastName: 'Hartanto',
-    //         userName: 'tarcih',
-    //         password: 'somepassword',
-    //     },
-    //     address: '10721 Meridian Ave N',
-    // }
+    async function sellerFetchHandler() {
+        if (authCtx.userAuthInfo.id === undefined || authCtx.userAuthInfo.id === null ) {
+            return;
+        }
+        setIsLoading(true);
+        // console.log("hello from seller")
+        // console.log(authCtx.userAuthInfo.id);
+        const sellerFetch = await fetch(`http://localhost:8080/seller/find/${authCtx.userAuthInfo.id}`);
+        const sellerFetchedData = await sellerFetch.json();
+        // console.log(sellerFetchedData);
+        setSellerData(sellerFetchedData);
+        setIsLoading(false);
+    }
 
-    // const dummyProducts = [
-    //     {
-    //         id: 1,
-    //         productName: 'Product 1',
-    //         manufacturerName: 'Manufacturer 1',
-    //         quantity: 20,
-    //         price: 5,
-    //     },
-    //     {
-    //         id: 2,
-    //         productName: 'Product 2',
-    //         manufacturerName: 'Manufacturer 2',
-    //         quantity: 30,
-    //         price: 15,
-    //     },
-    //     {
-    //         id: 3,
-    //         productName: 'Product 3',
-    //         manufacturerName: 'Manufacturer 3',
-    //         quantity: 40,
-    //         price: 25,
-    //     },
-    //     {
-    //         id: 4,
-    //         productName: 'Product 4',
-    //         manufacturerName: 'Manufacturer 4',
-    //         quantity: 50,
-    //         price: 35,
-    //     },
-    //     {
-    //         id: 5,
-    //         productName: 'Product 5',
-    //         manufacturerName: 'Manufacturer 5',
-    //         quantity: 60,
-    //         price: 45,
-    //     },
-    // ];  
+    async function sellersProductFetchHandler() {
+        if (authCtx.userAuthInfo.id === undefined || authCtx.userAuthInfo.id === null ) {
+            return;
+        }
+        setLoadSellersProduct(true);
+        const sellersProdFetch = await fetch(`http://localhost:8080/product/findBySellerId/${authCtx.userAuthInfo.id}`);
+        const sellersProdData = await sellersProdFetch.json();
+        // console.log(sellersProdData);
+        setSellersProduct(sellersProdData);
+        setLoadSellersProduct(false);
+    }
 
-    // function fetchSellerInfoAndProduct() {
-    //     setSellerInfo(dummySellerInfo);
-    //     setSellerProducts(dummyProducts);
-    // }
-
-    // useEffect(() => {
-    //     // change this to a function that calls the API to get the seller info
-    //     let fetchData = setTimeout(() => fetchSellerInfoAndProduct(), 1000);
-    //     // change this to a function that calls the API to get the seller's products
-    //     return () => {
-    //         clearTimeout(fetchData);
-    //     }
-    // }, []);
+    useEffect(() => {
+        sellerFetchHandler();
+        sellersProductFetchHandler();
+    }, [authCtx]);
 
     const navigateToUpdateSellerHandler = () => {
-        navigate(`/un=+${username}/pw=+${password}/ut=+${usertype}/acc_info/edit/slid=+${dummySellerInfo.id}`);
+        navigate(`/un=+${username}/pw=+${password}/ut=+${usertype}/uid=+${authCtx.userAuthInfo.user.id}/acc_info/edit/slid=+${authCtx.userAuthInfo.id}`);
     }
 
     const navigateToAddProductHandler = () => {
-        navigate(`/un=+${username}/pw=+${password}/ut=+${usertype}/product/add`);
+        navigate(`/un=+${username}/pw=+${password}/ut=+${usertype}/slid=+${authCtx.userAuthInfo.id}/product/add`);
     }
-
-    // console.log(sellerInfo);
-    // console.log(sellerProducts);
 
     return (
         <Fragment>
-            <h1>Hello {props.sellerName}</h1>
+            <h1>Hello {sellerData.user.firstName}</h1>
             <div>
                 <button onClick = {navigateToUpdateSellerHandler}>Update Seller Info</button>
                 <button onClick = {navigateToAddProductHandler}>Post Poroduct</button>
             </div>
             <br /><br />
-            <div>
-                This is your seller account information:
-                <ul>
-                    <li>Email: {dummySellerInfo.user.email}</li>
-                    <li>First Name: {dummySellerInfo.user.firstName}</li>
-                    <li>Last Name: {dummySellerInfo.user.lastName}</li>
-                    <li>User Name: {dummySellerInfo.user.userName}</li>
-                    <li>Address: {dummySellerInfo.address}</li>
-                </ul>
-            </div>
-            
+                {
+                    (isLoading && sellerData !== {}) ? 
+                        <div>
+                            <span>Loading...</span> 
+                        </div>
+                    :
+                    <div>
+                        <span>This is your seller account information:</span>
+                        <ul>
+                            <li>Email: {sellerData.user.email}</li>
+                            <li>First Name: {sellerData.user.firstName}</li>
+                            <li>Last Name: {sellerData.user.lastName}</li>
+                            <li>User Name: {sellerData.user.userName}</li>
+                            <li>Address: {sellerData.address}</li>
+                        </ul>
+                    </div>
+                }
             <br />
             <span>Your products:</span>
             <ul>
-                {dummyProducts.map((product) =>
+                { loadSellersProduct ? <span>Loading...</span> :
+                sellersProduct.map((product) =>
                     <li key = {product.id}>
-                        <Product prod = {product}/>
+                        <Product prod = {product} sellerId = {sellerData.id}/>
                     </li>
-                )}
+                )
+                }
             </ul>
         </Fragment>
     )

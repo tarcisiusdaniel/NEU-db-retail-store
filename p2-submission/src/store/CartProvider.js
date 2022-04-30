@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { CartContext } from "./context";
 
 const defaultCartState = {
@@ -51,13 +51,47 @@ const cartReducer = (state, action) => {
             totalAmount: newTotalAmount
         };
     }
+    else if (action.type === "RECOVER") {
+        return action.cartState
+    }
+    else if (action.type === "RESET") {
+        return defaultCartState
+    }
     return defaultCartState;
 }
 
 const CartProvider = (props) => {
     const[cartState, setCartState] = useReducer(cartReducer, defaultCartState);
+    const[recordItems, setRecordItems] = useState([]);
+    const[recordTotalAmount, setRecordTotalAmount] = useState(0);
 
-    const addItemHandler = (item) => {
+    useEffect(() => {
+        console.log('hello');
+        const recoveredCartState = JSON.parse(localStorage.getItem('cartState'));
+        console.log(recoveredCartState);
+        setCartState({
+            type: 'RECOVER',
+            cartState: recoveredCartState
+        });
+    }, []);
+
+    useEffect(() => {
+        const timeout = setTimeout(localStorage.setItem('cartState', JSON.stringify(cartState)), 500);
+        
+        // console.log("ngentot");
+        
+        // console.log(recoveredCartState.items);
+        // setCartState({
+        //     type: 'RECOVER',
+        //     cartState: recoveredCartState
+        // });
+
+        return(() => {
+            clearTimeout(timeout);
+        })
+    },[cartState]);
+
+    const addItemHandler = async (item) => {
         // console.log(item);
         setCartState({
             type: 'ADD',
@@ -72,11 +106,18 @@ const CartProvider = (props) => {
         });
     }
 
+    const removeAllItemsHandler = () => {
+        setCartState({
+            type: 'RESET',
+        });
+    }
+
     const cartContext = {
         items: cartState.items,
         totalAmount: cartState.totalAmount,
         addItem: addItemHandler,
         removeItem: removeItemHandler,
+        removeAllItems: removeAllItemsHandler,
     };
 
     return (

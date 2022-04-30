@@ -12,6 +12,7 @@ const AuthProvider = (props) => {
         const localStorageUserAuthInfo = localStorage.getItem('userAuthInfo');
 
         if (localStorageIsLoggedIn === '1') {
+            // console.log('hey');
             setIsLoggedIn(true);
             setUserType(localStorageIsBuyer);
             // if (localStorageIsBuyer === '1') {
@@ -20,9 +21,11 @@ const AuthProvider = (props) => {
             //     setIsBuyer(false);
             // }
             // console.log(JSON.parse(localStorageUserAuthInfo));
+            // console.log(JSON.parse(localStorageUserAuthInfo));
+
             setUserAuthInfo(JSON.parse(localStorageUserAuthInfo));
         }
-    })
+    },[]);
 
     const loginHandler = (username, password, userType, userAuthInfo) => {
         localStorage.setItem('isLoggedIn', '1');

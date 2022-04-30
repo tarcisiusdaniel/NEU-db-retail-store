@@ -9,11 +9,22 @@ const Product = (props) => {
     const editProductHandler = () => {
         // console.log(+props.prod.id);
         let prodId = +props.prod.id;
-        navigate(`/un=+${username}/pw=+${password}/ut=+${usertype}/product/edit/prid=+${prodId}`);
+        navigate(`/un=+${username}/pw=+${password}/ut=+${usertype}/product/edit/slid=+${+props.sellerId}/prid=+${prodId}`);
+    }
+
+    async function deleteProductFetchHandler(id) {
+        let prodId = +props.prod.id;
+        const productDeleteFetch = await fetch(`http://localhost:8080/product/delete/${prodId}/${props.sellerId}`);
+        if (productDeleteFetch.ok) {
+            setIsDeleted(true);
+        }
+        else if (!productDeleteFetch.ok) {
+            setIsDeleted(false);
+        }
     }
 
     const deleteProductHandler = () => {
-        setIsDeleted(true);
+        deleteProductFetchHandler(+props.userId);
     }   
 
     return (
