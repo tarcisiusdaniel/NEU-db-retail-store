@@ -75,16 +75,20 @@ public class AuthController {
         loginDetails.getUserNameOrEmail());
     if(userInDb!=null && !userInDb.getUserName().trim().equals(loginDetails.getUserNameOrEmail())
        &&  !userInDb.getEmail().trim().equals(loginDetails.getUserNameOrEmail())){
-      return new ResponseEntity<>("Username and Email do not exist.", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("Username or Email do not exist.", HttpStatus.BAD_REQUEST);
     }
 
-      User user = new User();
+
 
       var userFound = userService.findUserByPassword(loginDetails.getUserNameOrEmail(), loginDetails.getPassword());
       if(userFound == null){
-        return new ResponseEntity<>("Wrong credentials passed. Login failed.", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Wrong credentials passed. Login failed.", HttpStatus.BAD_REQUEST);
       }
-    return new ResponseEntity<>("User logged in successfully", HttpStatus.OK);
+    if(loginDetails.getIsBuyer()){
+      return new ResponseEntity<>(buyerService.findBuyerByUserId(userFound.getId()), HttpStatus.OK);
+    }else{
+      return new ResponseEntity<>(sellerService.findSellerByUserId(userFound.getId()), HttpStatus.OK);
+    }
   }
   @GetMapping("/users")
   public List<User> listUsers(User user) {

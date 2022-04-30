@@ -15,4 +15,8 @@ public interface SellerDao extends CrudRepository<Seller, Integer> {
   @Query(value = "SELECT * FROM sellers WHERE id=:sellerId",
       nativeQuery = true)
   public Seller findSellerById(@Param("sellerId") Integer id);
+
+  @Query(value = "SELECT * FROM sellers WHERE user_id=:userid",
+      nativeQuery = true)
+  public Seller findSellerByUserId(@Param("userid") Integer id);
 }

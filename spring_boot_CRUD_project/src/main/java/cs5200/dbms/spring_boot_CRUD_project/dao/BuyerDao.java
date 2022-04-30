@@ -10,9 +10,14 @@ public interface BuyerDao extends CrudRepository<Buyer, Integer> {
 
   @Query(value = "SELECT * FROM buyers",
       nativeQuery = true)
-  public List<Buyer> findAllBuyers();
+  List<Buyer> findAllBuyers();
 
   @Query(value = "SELECT * FROM buyers WHERE id=:buyerId",
       nativeQuery = true)
-  public Buyer findBuyerById(@Param("buyerId") Integer id);
+  Buyer findBuyerById(@Param("buyerId") Integer id);
+
+  @Query(value = "SELECT * FROM buyers WHERE user-id=:userId",
+      nativeQuery = true)
+  Buyer findBuyerByUserId(@Param("userId") Integer id);
+
 }

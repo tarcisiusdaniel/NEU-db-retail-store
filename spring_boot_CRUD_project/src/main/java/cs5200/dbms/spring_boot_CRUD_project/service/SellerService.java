@@ -2,6 +2,7 @@ package cs5200.dbms.spring_boot_CRUD_project.service;
 
 import cs5200.dbms.spring_boot_CRUD_project.dao.SellerDao;
 import cs5200.dbms.spring_boot_CRUD_project.dao.UserDao;
+import cs5200.dbms.spring_boot_CRUD_project.entity.Buyer;
 import cs5200.dbms.spring_boot_CRUD_project.entity.Seller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,9 @@ public class SellerService {
 
   public Seller updateSeller(Seller newSeller) {
     return sellerDao.save(newSeller);
+  }
+
+  public Seller findSellerByUserId(Integer id) {
+    return sellerDao.findSellerByUserId(id);
   }
 }

@@ -121,4 +121,12 @@ public class Order {
   public List<PurchaseItem> getItems() {
     return items;
   }
+
+  public void setCreatedOn(Date createdOn) {
+    this.createdOn = createdOn;
+  }
+
+  public Date getCreatedOn() {
+    return createdOn;
+  }
 }

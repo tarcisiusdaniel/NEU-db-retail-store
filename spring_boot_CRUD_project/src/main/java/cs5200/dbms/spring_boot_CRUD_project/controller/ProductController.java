@@ -24,8 +24,8 @@ public class ProductController {
   @Autowired
   private ProductService productService;
 
-  @PostMapping("/create/{userId}")
-  public ResponseEntity<?> add(@RequestBody Product product,@PathVariable("userId") int userid) {
+  @PostMapping("/create/{sellerId}")
+  public ResponseEntity<?> add(@RequestBody Product product,@PathVariable("sellerId") int userid) {
     product.setCreatedBy(userid);
     int newId = productService.createProduct(product).getId();
     return newId > 0 ?
@@ -53,9 +53,9 @@ public class ProductController {
     productService.deleteProduct(productId);
   }
 
-  @PostMapping("/update/{userId}")
-  public ResponseEntity<?> update(@PathVariable("userId") int userId, @RequestBody Product product) {
-    if (product == null || userId < 1) {
+  @PostMapping("/update/{sellerId}")
+  public ResponseEntity<?> update(@PathVariable("sellerId") int sellerId, @RequestBody Product product) {
+    if (product == null || sellerId < 1) {
       return new ResponseEntity<>("Arguments can not be null."
           , HttpStatus.BAD_REQUEST);
     }
@@ -67,7 +67,7 @@ public class ProductController {
           , HttpStatus.BAD_REQUEST);
     }
 
-    if(oldProduct.getCreatedBy() != userId){
+    if(oldProduct.getCreatedBy() != sellerId){
       return new ResponseEntity<>("You are not authorized to update other seller's products"
           , HttpStatus.BAD_REQUEST);
     }

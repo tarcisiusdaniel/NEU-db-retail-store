@@ -14,7 +14,10 @@ import cs5200.dbms.spring_boot_CRUD_project.service.OrderService;
 import cs5200.dbms.spring_boot_CRUD_project.service.ProductService;
 import cs5200.dbms.spring_boot_CRUD_project.service.PurchaseService;
 import cs5200.dbms.spring_boot_CRUD_project.service.TransactionService;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import org.aspectj.weaver.ast.Or;
@@ -80,6 +83,7 @@ public class OrderController {
     actualOrder.setOrderStatus(order.getOrderStatus());
     actualOrder.setTotalPrice(order.getTotalPrice());
     actualOrder.setItems(order.getItems());
+    actualOrder.setCreatedOn(new Date(System.currentTimeMillis()));
 
     Order savedOrder = orderService.createOrder(actualOrder);
 
@@ -87,6 +91,9 @@ public class OrderController {
     if(actualOrder.getOrderStatus() == Order_Status.CHECKOUT){
       actualOrder.setOrderStatus(Order_Status.SUCCESS);
       result = createTransaction(actualOrder);
+    }else if(actualOrder.getOrderStatus() == Order_Status.PENDING){
+      actualOrder.setOrderStatus(Order_Status.PENDING);
+      return new ResponseEntity<>(actualOrder,HttpStatus.OK);
     }else{
       actualOrder.setOrderStatus(Order_Status.CANCEL);
       result = "Order cancelled";
