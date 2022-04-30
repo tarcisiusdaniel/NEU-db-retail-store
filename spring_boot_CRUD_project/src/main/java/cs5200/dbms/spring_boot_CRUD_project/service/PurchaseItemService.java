@@ -13,21 +13,6 @@ public class PurchaseItemService {
   @Autowired
   private PurchaseItemDao purchaseItemDao;
 
-  public PurchaseItem create(PurchaseItem item) {
-    return purchaseItemDao.save(item);
-  }
-
-//  public List<PurchaseItem> findAllItems() {
-//    return purchaseItemDao.findAllBuyers();
-//  }
-
-//  public Buyer findBuyerById(@PathVariable("buyerId") Integer id) {
-//    return purchaseItemDao.findBuyerById(id);
-//  }
-
-  public void deleteItems(Integer id) {
-    purchaseItemDao.deleteById(id);
-  }
 
   public PurchaseItem updateItems(PurchaseItem item) {
 

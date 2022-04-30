@@ -21,7 +21,7 @@ public interface PurchaseDao extends CrudRepository<Purchase, Integer> {
       nativeQuery = true)
   public List<Integer> findPurchaseByOrderId(@Param("orderId") Integer orderId);
 
-  @Query(value = "SELECT * FROM cart_items WHERE purchase_id=:purchaseId",
+  @Query(value = "SELECT * FROM purchase_items WHERE purchase_id=:purchaseId",
       nativeQuery = true)
   public List<PurchaseItem> findProductsByPurchaseId(@Param("purchaseId") Integer purchaseId);
 }
