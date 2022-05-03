@@ -38,7 +38,7 @@ const ProductListScreen = (props) => {
                 {!isLoading && productData.length === 0 && <h3>There are no products</h3>}
                 {!isLoading && productData.length !== 0 && <h3>There are {productData.length} products:</h3>}
                 {productRenderedView}
-                {!isLoading && <a href = '/edit_screen/product'>Edit a product record or create a new product</a>}
+                {!isLoading && <a href = '/edit_screen/product/${id}'>Edit a product record or create a new product</a>}
             </div>
         </Fragment>
     )

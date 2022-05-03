@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SubmissionPage from './components/Submission/SubmissionPage';
 import ListScreen from './components/Submission/Screen/ListScreen';
 import EditScreen from './components/Submission/Screen/EditScreen';
@@ -18,11 +18,17 @@ import SellerEdit from './components/Presentation/User/Seller/SellerEdit';
 import Cart from './components/Presentation/User/Buyer/Cart/Cart';
 import Orders from './components/Presentation/User/Buyer/Orders/Orders';
 import Transactions from './components/Presentation/User/Buyer/Transactions/Transactions';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import PurchaseItemsList from './components/Submission/Screen/List/PurchaseItemsList';
+import BuyerEdit from './components/Presentation/User/Buyer/BuyerEdit';
+import {ToastContainer,toast} from 'react-toastify'
+
 
 function App() {
 
   return (
     <div>
+      <ToastContainer />
       <AuthProvider>
         <Routes>
           {/* <Route path = '/' element = {<SubmissionPage />} />
@@ -41,9 +47,11 @@ function App() {
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype/product/edit/slid=+:seller_id/prid=+:product_id' element = {<ProductEdit />} />
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype/slid=+:seller_id/product/add' element = {<AddProduct />} />
           {/* route for buyers */}
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/uid=+:user_id/acc_infoBuyer/edit/slid=+:buyer_id' element = {<BuyerEdit />} />
           <Route path = '/un=+:username/pw=+:password/ut=+:usertype/brid=+:buyer_id/cart/view' element = {<Cart />} />
-          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/orders/view' element = {<Orders />} />
-          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/transactions/view' element = {<Transactions />} />
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/brid=+:buyer_id/orders/view' element = {<Orders />} />
+          <Route path="/products/edit/:id" element={<PurchaseItemsList />}/>
+          <Route path = '/un=+:username/pw=+:password/ut=+:usertype/brid=+:buyer_id/transactions/view' element = {<Transactions />} />
         </Routes>
       </AuthProvider>
     </div>

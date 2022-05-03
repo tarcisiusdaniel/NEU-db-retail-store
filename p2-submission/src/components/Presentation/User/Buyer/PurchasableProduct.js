@@ -12,6 +12,7 @@ const PurchasableProduct = (props) => {
             manufacturer: props.product.manufacturerName,
             amount: +event.target[0].value,
             price: props.product.price,
+            category: props.product.category,
         })
     }
 
@@ -20,18 +21,21 @@ const PurchasableProduct = (props) => {
     return(
         <Fragment>
             <div>
+
                 Product Name: {props.product.productName}
                 <br />
                 Manufacturer: {props.product.manufacturerName}
                 <br />
-                Quantity: {props.product.quantity}
+                Category: {props.product.category}
                 <br />
                 Price: {props.product.price}
             </div>
             <div>
                 <form onSubmit = {addToCartHandler}>
+                    
                     <input type = "number" min = '1' max = '3' step = '0' defaultValue = '1'/>
-                    <button type = "submit">Add To Cart</button>
+                    <button className="btn btn-primary m-3" type = "submit">
+                        Add To Cart</button>
                 </form>
             </div>
         </Fragment>

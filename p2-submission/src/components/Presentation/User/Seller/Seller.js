@@ -63,12 +63,22 @@ const Seller = (props) => {
         navigate(`/un=+${username}/pw=+${password}/ut=+${usertype}/slid=+${authCtx.userAuthInfo.id}/product/add`);
     }
 
+    const logoutHandler = () => {
+        // code to logout
+        if (authCtx.userType === 'BUYER') {
+
+        }
+        authCtx.onLogout();
+        navigate('/');
+    }
+
     return (
         <Fragment>
             <h1>Hello {sellerData.user.firstName}</h1>
             <div>
-                <button onClick = {navigateToUpdateSellerHandler}>Update Seller Info</button>
-                <button onClick = {navigateToAddProductHandler}>Post Poroduct</button>
+                <button className="btn btn-primary" onClick = {navigateToUpdateSellerHandler}>Update Seller Info</button>
+                <button className="btn btn-primary m-3" onClick = {navigateToAddProductHandler}>Post Product</button>
+                <button className="btn btn-primary" onClick = {logoutHandler}>Logout</button>
             </div>
             <br /><br />
                 {
@@ -79,13 +89,46 @@ const Seller = (props) => {
                     :
                     <div>
                         <span>This is your seller account information:</span>
-                        <ul>
-                            <li>Email: {sellerData.user.email}</li>
-                            <li>First Name: {sellerData.user.firstName}</li>
-                            <li>Last Name: {sellerData.user.lastName}</li>
-                            <li>User Name: {sellerData.user.userName}</li>
-                            <li>Address: {sellerData.address}</li>
-                        </ul>
+                        <div className="form-group row">
+                            <label forhtml = "email" className="col-sm-2 col-form-label">Email:</label>
+                            <div className="col-sm-10">
+                            <input type = "text" id = "email" 
+                            value = {sellerData.user.email}readOnly
+                            className="form-control col-4"/>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label forhtml = "firstname" className="col-sm-2 col-form-label">First Name:</label>
+                            <div className="col-sm-10">
+                            <input type = "text" id = "firstname" 
+                            value = {sellerData.user.firstName}readOnly
+                            className="form-control col-4"/>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label forhtml = "lastname" className="col-sm-2 col-form-label">Last Name:</label>
+                            <div className="col-sm-10">
+                            <input type = "text" id = "lastname" 
+                            value = {sellerData.user.lastName}readOnly
+                            className="form-control col-4"/>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label forhtml = "userName" className="col-sm-2 col-form-label">User Name:</label>
+                            <div className="col-sm-10">
+                            <input type = "text" id = "userName" 
+                            value = {sellerData.user.userName}readOnly
+                            className="form-control col-4"/>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label forhtml = "address" className="col-sm-2 col-form-label">Address:</label>
+                            <div className="col-sm-10">
+                            <input type = "text" id = "address" 
+                            value = {sellerData.address}readOnly
+                            className="form-control col-4"/>
+                            </div>
+                        </div>
                     </div>
                 }
             <br />

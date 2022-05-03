@@ -1,5 +1,6 @@
 import { Fragment, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { CartContext } from "../../../../../store/context";
 
 const Cart = (props) => {
@@ -30,8 +31,10 @@ const Cart = (props) => {
         if (response.ok) {
             cartCtx.removeAllItems();
             console.log("success");
+            toast.success("Order created successfully! Please select payment option in Order page.");
         }
         else if (!response.ok) {
+            toast.error("Not enough products in stock. Please try again later or decrease the quantity.");
             console.log("fail");
         }
     }
@@ -58,23 +61,33 @@ const Cart = (props) => {
             <br />
             Product Manufacturer: {item.manufacturer}
             <br />
+            Category: {item.category}
+            <br />
             Quantity: {item.amount}
             <br />
             Price: {item.price}
             <br />
-            <button onClick = {removeItemByOne.bind(null, item.id)}>-</button>
-            <button onClick = {addItemByOne.bind(null, item)}>+</button>
+            <button className="btn btn-primary m-3" onClick = {removeItemByOne.bind(null, item.id)}>-</button>
+            <button className="btn btn-primary m-3" onClick = {addItemByOne.bind(null, item)}>+</button>
         </li>
     );
     return (
         <Fragment>
-            <h1>Your Items in Carts</h1>
-            {cartCtx.items.length === 0 && <span>No items in your cart</span>}
-            <br />
-            {cartCtx.items.length !== 0 && <ul>{renderedItems}</ul>}
-            {cartCtx.items.length !== 0 && <span>Total Price: ${cartCtx.totalAmount}</span>}
-            <button onClick = {goBackToBuyers}>Go Back</button>
-            {cartCtx.items.length !== 0 && <button onClick = {orderHandler}>Order</button>}
+            <div className="container">
+            <div className="card">
+                <br></br>
+                <h3>Your items in cart</h3>
+                {cartCtx.items.length === 0 && <span>No items in your cart</span>}
+                <br />
+                {cartCtx.items.length !== 0 && <ul>{renderedItems}</ul>}
+                {cartCtx.items.length !== 0 && <span>Total Price: ${cartCtx.totalAmount}</span>}
+                <br></br>
+                
+            </div>
+            <button className="btn btn-primary" onClick = {goBackToBuyers}>Go Back</button>
+                {cartCtx.items.length !== 0 && 
+                <button className="btn btn-primary m-3" onClick = {orderHandler}>Check Out</button>}
+            </div>
         </Fragment>
     )
 }

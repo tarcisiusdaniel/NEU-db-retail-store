@@ -9,19 +9,11 @@ const UserLandingPage = (props) => {
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const logoutHandler = () => {
-        // code to logout
-        if (authCtx.userType === 'BUYER') {
-
-        }
-        authCtx.onLogout();
-        navigate('/');
-    }
-
     // console.log(authCtx.userAuthInfo);
 
     return (
-        <div>
+        <div className="container">
+            
             {authCtx.userType === 'BUYER' ? 
                 <Buyer 
                     // buyerName = {authCtx.userAuthInfo.user.firstName}
@@ -34,7 +26,6 @@ const UserLandingPage = (props) => {
                 /> 
             }
             <br />
-            <button onClick = {logoutHandler}>Logout</button>
         </div>
 
     );

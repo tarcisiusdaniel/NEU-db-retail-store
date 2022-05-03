@@ -39,8 +39,8 @@ const Product = (props) => {
                 Price: {props.prod.price}
             </div>
             <div>
-                <button onClick = {editProductHandler} disabled = {isDeleted}>Edit</button>
-                <button onClick = {deleteProductHandler}>Delete</button>
+                <button className="btn btn-primary" onClick = {editProductHandler} disabled = {isDeleted}>Edit</button>
+                <button className="btn btn-primary m-3" onClick = {deleteProductHandler}>Delete</button>
             </div>
             <div>
                 {isDeleted && <span>Deleted</span>}
