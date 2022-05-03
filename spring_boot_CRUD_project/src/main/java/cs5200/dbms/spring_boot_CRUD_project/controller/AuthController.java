@@ -38,12 +38,12 @@ public class AuthController {
     // add check for username exists in a DB
     User userInDb = userService.findUserByUserNameOrEmail(signUp.getUserName(), signUp.getEmail());
     if(userInDb!=null && userInDb.getUserName().equals(signUp.getUserName())){
-      return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(signUp, HttpStatus.BAD_REQUEST);
     }
 
     // add check for email exists in DB
     if(userInDb!= null && userInDb.getEmail().equals(signUp.getEmail())){
-      return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(signUp, HttpStatus.IM_USED);
     }
     User user = new User();
     user.setFirstName(signUp.getFirstName());
@@ -59,14 +59,14 @@ public class AuthController {
       buyer.setBillingAddress(signUp.getBillingAddress());
       buyer.setShippingAddress(signUp.getShippingAddress());
       int id = buyerService.createBuyer(buyer).getId();
-      return id > 0 ? new ResponseEntity<>("Buyer registered successfully", HttpStatus.OK) :
+      return id > 0 ? new ResponseEntity<>(buyer, HttpStatus.OK) :
           new ResponseEntity<>("Buyer registration failed", HttpStatus.INTERNAL_SERVER_ERROR);
     }else{
       Seller seller = new Seller();
       seller.setUser(user);
       seller.setAddress(signUp.getBillingAddress());
       int id = sellerService.createSeller(seller).getId();
-      return id > 0 ? new ResponseEntity<>("Seller registered successfully", HttpStatus.OK) :
+      return id > 0 ? new ResponseEntity<>(seller, HttpStatus.OK) :
           new ResponseEntity<>("Seller registration failed", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -77,25 +77,30 @@ public class AuthController {
         loginDetails.getUserNameOrEmail());
     if(userInDb!=null && !userInDb.getUserName().trim().equals(loginDetails.getUserNameOrEmail())
        &&  !userInDb.getEmail().trim().equals(loginDetails.getUserNameOrEmail())){
-      return new ResponseEntity<>("Username or Email do not exist.", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(loginDetails, HttpStatus.BAD_REQUEST);
     }
-
-
 
       var userFound = userService.findUserByPassword(loginDetails.getUserNameOrEmail(), loginDetails.getPassword());
       if(userFound == null){
-        return new ResponseEntity<>("Wrong credentials passed. Login failed.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(loginDetails, HttpStatus.BAD_REQUEST);
       }
     if(loginDetails.getIsBuyer()){
-      return new ResponseEntity<>(buyerService.findBuyerByUserId(userFound.getId()), HttpStatus.OK);
+      Buyer buyerFound = buyerService.findBuyerByUserId(userFound.getId());
+      if(buyerFound==null){
+        return new ResponseEntity<>(loginDetails,HttpStatus.BAD_REQUEST);
+      }
+      return new ResponseEntity<>(buyerFound, HttpStatus.OK);
     }else{
-      return new ResponseEntity<>(sellerService.findSellerByUserId(userFound.getId()), HttpStatus.OK);
+      Seller sellerFound = sellerService.findSellerByUserId(userFound.getId());
+      if(sellerFound==null){
+        return new ResponseEntity<>(loginDetails,HttpStatus.BAD_REQUEST);
+      }
+      return new ResponseEntity<>(sellerFound, HttpStatus.OK);
     }
   }
   @GetMapping("/users")
   public List<User> listUsers(User user) {
-    List<User> listUsers = userService.findAllUser();
-    return listUsers;
+    return userService.findAllUser();
   }
 }
 

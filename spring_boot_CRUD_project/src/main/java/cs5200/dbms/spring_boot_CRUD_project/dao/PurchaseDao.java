@@ -9,19 +9,19 @@ import org.springframework.data.repository.query.Param;
 
 public interface PurchaseDao extends CrudRepository<Purchase, Integer> {
 
-  @Query(value = "SELECT * FROM purchase",
+  @Query(value = "SELECT * FROM purchase_items",
       nativeQuery = true)
-  public List<Purchase> findAllPurchases();
+  List<Purchase> findAllPurchases();
 
-  @Query(value = "SELECT * FROM purchase WHERE id=:purchaseId",
+  @Query(value = "SELECT * FROM purchase_items WHERE id=:purchaseId",
       nativeQuery = true)
-  public Purchase findPurchaseById(@Param("purchaseId") Integer id);
+  Purchase findPurchaseById(@Param("purchaseId") Integer id);
 
-  @Query(value = "SELECT id FROM purchase WHERE order_id=:orderId",
+  @Query(value = "SELECT * FROM purchase_items WHERE order_id=:orderId",
       nativeQuery = true)
-  public List<Integer> findPurchaseByOrderId(@Param("orderId") Integer orderId);
+  List<Purchase> findPurchaseByOrderId(@Param("orderId") Integer orderId);
 
-  @Query(value = "SELECT * FROM purchase_items WHERE purchase_id=:purchaseId",
-      nativeQuery = true)
-  public List<PurchaseItem> findProductsByPurchaseId(@Param("purchaseId") Integer purchaseId);
+//  @Query(value = "select * from purchase_items where id=:purchaseId",
+//      nativeQuery = true)
+//  public List<Object[]> findProductsByPurchaseId(@Param("purchaseId") Integer purchaseId);
 }

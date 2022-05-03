@@ -158,4 +158,12 @@ public class Product {
   public void setCreatedBy(Integer createdBy) {
     this.createdBy = createdBy;
   }
+
+  public Product_Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Product_Category category) {
+    this.category = category;
+  }
 }

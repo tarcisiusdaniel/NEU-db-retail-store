@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProductDao extends CrudRepository<Product, Integer> {
 
-  @Query(value = "SELECT * FROM products",
+  @Query(value = "SELECT * FROM products where quantity > 0",
       nativeQuery = true)
   List<Product> findAllProducts();
 
@@ -17,7 +17,7 @@ public interface ProductDao extends CrudRepository<Product, Integer> {
       nativeQuery = true)
   Product findProductById(@Param("productId") Integer id);
 
-  @Query(value = "SELECT * FROM products WHERE product_category=:category",
+  @Query(value = "SELECT * FROM products WHERE product_category=:category and quantity > 0",
       nativeQuery = true)
   List<Product> findProductByCategory(@Param("category") String category);
 

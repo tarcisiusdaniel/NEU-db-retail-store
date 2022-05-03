@@ -2,6 +2,7 @@ package cs5200.dbms.spring_boot_CRUD_project.service;
 
 import cs5200.dbms.spring_boot_CRUD_project.dao.OrderDao;
 import cs5200.dbms.spring_boot_CRUD_project.entity.Order;
+import cs5200.dbms.spring_boot_CRUD_project.entity.OrderPurchaseItemsDto;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,12 @@ public class OrderService {
     return orderDao.save(order);
   }
 
-  public List<Order> findOrderByBuyerId(Integer buyerId){
+  public List<Order> findOrderByBuyerId(Integer buyerId) {
     return orderDao.findOrderByBuyerId(buyerId);
+  }
+
+  public List<?> findPurchaseItems(Integer orderId){
+    return orderDao.findPurchaseItems(orderId);
+
   }
 }

@@ -26,6 +26,10 @@ public class TransactionService {
     return transactionDao.findTransactionById(id);
   }
 
+  public List<Transaction> findTransactionByBuyerId(Integer buyerId) {
+    return transactionDao.findTransactionByBuyerId(buyerId);
+  }
+
   public void deleteTransaction(Integer id) {
     transactionDao.deleteById(id);
   }
