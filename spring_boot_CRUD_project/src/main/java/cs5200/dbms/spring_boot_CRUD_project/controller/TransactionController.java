@@ -1,6 +1,7 @@
 package cs5200.dbms.spring_boot_CRUD_project.controller;
 
 import cs5200.dbms.spring_boot_CRUD_project.entity.Transaction;
+import cs5200.dbms.spring_boot_CRUD_project.service.OrderService;
 import cs5200.dbms.spring_boot_CRUD_project.service.TransactionService;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,9 @@ public class TransactionController {
   @Autowired
   private TransactionService transactionService;
 
+  @Autowired
+  private OrderService orderService;
+
   @PostMapping("/create")
   public String add(@RequestBody Transaction transaction) {
     return transactionService.createTransaction(transaction).getId() > 0
@@ -36,6 +40,14 @@ public class TransactionController {
   @GetMapping("/find/{transactionId}")
   public Transaction getTransaction(@PathVariable("transactionId") int id) {
     return transactionService.findTransactionById(id);
+  }
+  @GetMapping("/findByBuyerId/{buyerId}")
+  public List<Transaction> getTransactionByBuyerId(@PathVariable("buyerId") int id) {
+    var transactionList = transactionService.findTransactionByBuyerId(id);
+    for (Transaction transaction : transactionList) {
+      transaction.setTotal_price(orderService.findOrderById(transaction.getOrder()).getTotalPrice());
+    }
+    return transactionList;
   }
 
   @GetMapping("/delete/{transactionId}")

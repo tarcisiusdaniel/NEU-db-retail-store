@@ -1,10 +1,13 @@
 package cs5200.dbms.spring_boot_CRUD_project.controller;
 
+import cs5200.dbms.spring_boot_CRUD_project.entity.Order;
 import cs5200.dbms.spring_boot_CRUD_project.entity.Product;
 import cs5200.dbms.spring_boot_CRUD_project.service.ProductService;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +24,13 @@ public class ProductController {
   @Autowired
   private ProductService productService;
 
-  @PostMapping("/create")
-  public String add(@RequestBody Product product) {
-    return productService.createProduct(product).getId() > 0 ? "Product created successfully"
-        : "Failed";
-
+  @PostMapping("/create/{sellerId}")
+  public ResponseEntity<?> add(@RequestBody Product product,@PathVariable("sellerId") int userid) {
+    product.setCreatedBy(userid);
+    int newId = productService.createProduct(product).getId();
+    return newId > 0 ?
+        new ResponseEntity<>("Product created successfully",HttpStatus.OK) :
+        new ResponseEntity<>("Product created failed",HttpStatus.BAD_REQUEST);
   }
 
   @GetMapping("/findAll")
@@ -38,34 +43,51 @@ public class ProductController {
     return productService.findProductById(id);
   }
 
-  @GetMapping("/delete/{productId}")
-  public void delete(@PathVariable("productId") int id) {
-    productService.deleteProduct(id);
-  }
-
-  @PostMapping("/update/{productId}")
-  public String update(@PathVariable("productId") Integer productId, @RequestBody Product product) {
-    if (product == null || productId == null || productId.intValue() < 1) {
-      throw new RuntimeException("Arguments can not be null.");
-    }
-
+  @GetMapping("/delete/{productId}/{id}")
+  public void delete(@PathVariable("productId") int productId,@PathVariable("id") int userId) {
     Product oldProduct = productService.findProductById(productId);
 
+    if(oldProduct.getCreatedBy() != userId){
+      throw new RuntimeException("You are not authorized to delete other seller's products");
+    }
+    productService.deleteProduct(productId);
+  }
+
+  @PostMapping("/update/{sellerId}")
+  public ResponseEntity<?> update(@PathVariable("sellerId") int sellerId, @RequestBody Product product) {
+    if (product == null || sellerId < 1) {
+      return new ResponseEntity<>("Arguments can not be null."
+          , HttpStatus.BAD_REQUEST);
+    }
+
+    Product oldProduct = productService.findProductById(product.getId());
+
     if (oldProduct == null) {
-      throw new RuntimeException("Product does not exist as per the given details");
+      return new ResponseEntity<>("Product does not exist as per the given details"
+          , HttpStatus.BAD_REQUEST);
+    }
+
+    if(oldProduct.getCreatedBy() != sellerId){
+      return new ResponseEntity<>("You are not authorized to update other seller's products"
+          , HttpStatus.BAD_REQUEST);
     }
 
     Product updatedProduct = productService.updateProduct(product);
 
     if (!Objects.equals(oldProduct.getId(), updatedProduct.getId())) {
-      throw new RuntimeException(
-          "Error occurred while updating product details. Please check later.");
+      return new ResponseEntity<>("Error occurred while updating product details. Please check later."
+          , HttpStatus.BAD_REQUEST);
     }
 
-    return "Product updated successfully";
+    return new ResponseEntity<>("Product updated successfully", HttpStatus.OK);
   }
   @GetMapping("/findByCategory/{category}")
   public List<Product> findProductsByCategory(@PathVariable("category") String categoryName){
     return productService.findProductsByCategory(categoryName.toUpperCase());
+  }
+
+  @GetMapping("/findBySellerId/{sellerId}")
+  public List<Product> findBySellerId(@PathVariable ("sellerId") Integer buyerId){
+    return productService.findBySellerId(buyerId);
   }
 }

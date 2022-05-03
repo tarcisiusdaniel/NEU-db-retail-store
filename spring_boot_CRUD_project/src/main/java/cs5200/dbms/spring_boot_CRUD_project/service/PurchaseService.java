@@ -35,15 +35,14 @@ public class PurchaseService {
   }
 
   public Purchase updatePurchase(Purchase purchase) {
-
     return purchaseDao.save(purchase);
   }
 
-  public List<Integer> findPurchaseByOrderId(Integer orderId){
+  public List<Purchase> findPurchaseByOrderId(Integer orderId){
     return purchaseDao.findPurchaseByOrderId(orderId);
   }
 
-  public List<PurchaseItem> findProductsByPurchaseId(Integer purchaseId){
-    return purchaseDao.findProductsByPurchaseId(purchaseId);
-  }
+//  public List<Object[]> findProductsByPurchaseId(Integer purchaseId){
+//    return purchaseDao.findProductsByPurchaseId(purchaseId);
+//  }
 }

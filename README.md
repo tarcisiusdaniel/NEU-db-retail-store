@@ -1,4 +1,4 @@
-# P2 submission Gayatri and Tarcisius 
+# P3 submission Gayathri and Tarcisius 
 
 How to run the UI and the backend server:
 

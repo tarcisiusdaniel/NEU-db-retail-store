@@ -20,11 +20,11 @@ const CartListScreen = (props) => {
     const cartRenderedView = cartData.map((cart) => 
         <li key = {cart.id}>
             <span><b>For cart item with id of {cart.id}</b></span>
-            <ul>
-                <li>Cart Product's ID: {cart.productId}</li>
-                <li>Cart Buyer's ID: {cart.buyerId}</li>
-                <li>Cart Item's price: ${cart.totalPrice}</li>
-                <li>Cart Item's Quantity: {cart.quantity}</li>
+            <ul class="list-group">
+                <li class="list-group-item">Cart Product's ID: {cart.productId}</li>
+                <li class="list-group-item">Cart Buyer's ID: {cart.buyerId}</li>
+                <li class="list-group-item">Cart Item's price: ${cart.totalPrice}</li>
+                <li class="list-group-item">Cart Item's Quantity: {cart.quantity}</li>
             </ul>
         </li>
     );

@@ -20,38 +20,21 @@ public class Purchase {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-//  @OneToOne()
-//  @JoinColumn(name = "order_id")
   @Column(name="order_id")
   private Integer orderId;
+  @Column(name = "product_id")
+  private int productId;
 
-//  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//  @JoinColumn(name = "purchase_id", referencedColumnName = "id")
-  //@OnDelete(action = OnDeleteAction.)
-  //@JsonIgnore
-  //private List<PurchaseItem> items = new ArrayList<>();
-
-  //private int quantity;
+  @Column(name="quantity")
+  private Integer quantity;
 
   public Purchase() {
   }
 
-//  public Purchase(List<PurchaseItem> items){
-//   // this.orderId = orderId;
-//    this.items = items;
-//  }
   public Integer getId() {
     return id;
   }
 
-
-//  public void setProduct(List<PurchaseItem> product) {
-//    this.items = product;
-//  }
-
-//  public List<PurchaseItem> getItems() {
-//    return items;
-//  }
 
   public void setOrderId(Integer orderId) {
     this.orderId = orderId;
@@ -59,5 +42,21 @@ public class Purchase {
 
   public Integer getOrderId() {
     return orderId;
+  }
+
+  public int getProductId() {
+    return productId;
+  }
+
+  public void setProductId(int productId) {
+    this.productId = productId;
+  }
+
+  public Integer getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
   }
 }

@@ -1,6 +1,7 @@
 package cs5200.dbms.spring_boot_CRUD_project.service;
 
 import cs5200.dbms.spring_boot_CRUD_project.dao.ProductDao;
+import cs5200.dbms.spring_boot_CRUD_project.entity.Order;
 import cs5200.dbms.spring_boot_CRUD_project.entity.Product;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,9 @@ public class ProductService {
 
   public List<Product> findProductsByCategory(String category){
     return productDao.findProductByCategory(category);
+  }
+
+  public List<Product> findBySellerId(Integer sellerId){
+    return productDao.findBySellerId(sellerId);
   }
 }

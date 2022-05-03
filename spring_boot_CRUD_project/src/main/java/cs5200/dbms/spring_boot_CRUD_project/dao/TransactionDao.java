@@ -10,9 +10,14 @@ public interface TransactionDao extends CrudRepository<Transaction, Integer> {
 
   @Query(value = "SELECT * FROM transactions",
       nativeQuery = true)
-  public List<Transaction> findAllTransactions();
+  List<Transaction> findAllTransactions();
 
   @Query(value = "SELECT * FROM transactions WHERE id=:transactionId",
       nativeQuery = true)
-  public Transaction findTransactionById(@Param("transactionId") Integer id);
+  Transaction findTransactionById(@Param("transactionId") Integer id);
+
+  @Query(value = "SELECT * FROM transactions WHERE created_by=:buyerId",
+      nativeQuery = true)
+  List<Transaction> findTransactionByBuyerId(@Param("buyerId") Integer buyerId);
+
 }

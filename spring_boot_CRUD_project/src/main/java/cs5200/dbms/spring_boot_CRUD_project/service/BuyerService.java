@@ -36,4 +36,7 @@ public class BuyerService {
 
     return buyerDao.save(newBuyer);
   }
+  public Buyer findBuyerByUserId(Integer id) {
+    return buyerDao.findBuyerByUserId(id);
+  }
 }
