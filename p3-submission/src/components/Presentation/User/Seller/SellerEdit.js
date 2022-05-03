@@ -137,7 +137,7 @@ const SellerEdit = (props) => {
                         <input type="text" 
                         className="form-control col-4" 
                         id="password " 
-                        value={password}
+                        value={passwordui}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter Password"/>
                     </div>
