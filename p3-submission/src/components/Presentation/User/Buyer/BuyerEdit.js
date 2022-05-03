@@ -201,7 +201,7 @@ const BuyerEdit = (props) => {
                 
                 
                 <button className="btn btn-primary" type = "submit">Update Details</button>
-                <button className="btn btn-primary m-3" onClick = {viewCartHandler}>View Cart</button>
+                <button className="btn btn-primary m-3" onClick = {viewCartHandler}>Edit Cart</button>
                 <button className="btn btn-primary" type = "submit" onClick={goToDashboardHandler}>Go to Dashboard</button>
             </form>
             {!updateStatus && <span>Update failed</span>}
